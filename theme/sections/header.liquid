@@ -1,0 +1,204 @@
+{% comment %} 
+  Header Section 
+  - Navigation with logo, main menu, and cart icon 
+  - Search bar below main header content spanning full width
+  - Sticky positioning with smooth hover animations 
+  - Responsive: horizontal on desktop, simple stack on mobile
+{% endcomment %}
+
+<header class="header" role="banner">
+  <div class="container">
+    <!-- Main header content: logo, menu, cart -->
+    <div class="header__content">
+      <!-- Store logo/name linking to homepage -->
+      <div class="header__brand">
+        <a href="{{ routes.root_url }}" class="header__brand-link">
+          <h1 class="header__brand-title">{{ shop.name }}</h1>
+        </a>
+      </div>
+
+      <!-- Main navigation menu -->
+      <nav class="header__nav" role="navigation">
+        {% if linklists.main-menu.links.size > 0 %}
+          <ul class="header__nav-list">
+            {% for link in linklists.main-menu.links %}
+              <li class="header__nav-item">
+                <a href="{{ link.url }}" class="header__nav-link">
+                  {{ link.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <!-- Default navigation if no menu is set -->
+          <ul class="header__nav-list">
+            <li class="header__nav-item">
+              <a href="{{ routes.root_url }}" class="header__nav-link">Home</a>
+            </li>
+            <li class="header__nav-item">
+              <a href="{{ routes.collections_url }}" class="header__nav-link">Shop</a>
+            </li>
+            <li class="header__nav-item">
+              <a href="/pages/about" class="header__nav-link">About</a>
+            </li>
+            <li class="header__nav-item">
+              <a href="/pages/contact" class="header__nav-link">Contact</a>
+            </li>
+          </ul>
+        {% endif %}
+      </nav>
+
+      <!-- Cart icon -->
+      <div class="header__cart">
+        <a href="{{ routes.cart_url }}" class="header__cart-link">
+          <svg
+            class="header__cart-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 17.6 16.6 18 16 18H8C7.4 18 7 17.6 7 17V13M17 13H7"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span class="header__cart-text">Cart</span>
+          {% if cart.item_count > 0 %}
+            <span class="header__cart-count">{{ cart.item_count }}</span>
+          {% endif %}
+        </a>
+      </div>
+
+      <!-- Mobile menu toggle -->
+      <button class="header__mobile-toggle" aria-label="Toggle mobile menu">
+        <span class="header__hamburger-line"></span>
+        <span class="header__hamburger-line"></span>
+        <span class="header__hamburger-line"></span>
+      </button>
+    </div>
+
+    <!-- Full-width search bar below main header content -->
+    <div class="header__search-full">
+      <form action="/search" method="get" role="search" class="header__search-form">
+        <div class="header__search-wrapper">
+          <input 
+            type="search" 
+            name="q" 
+            placeholder="Search products..." 
+            class="header__search-input"
+            aria-label="Search products">
+          <button type="submit" class="header__search-button" aria-label="Search">
+            <svg class="header__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Mobile navigation -->
+    <div class="header__mobile-nav">
+      <!-- Mobile search -->
+      <div class="header__mobile-search">
+        <form action="/search" method="get" role="search" class="header__mobile-search-form">
+          <div class="header__mobile-search-wrapper">
+            <input 
+              type="search" 
+              name="q" 
+              placeholder="Search products..." 
+              class="header__mobile-search-input"
+              aria-label="Search products">
+            <button type="submit" class="header__mobile-search-button" aria-label="Search">
+              <svg class="header__mobile-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      {% if linklists.main-menu.links.size > 0 %}
+        <ul class="header__mobile-nav-list">
+          {% for link in linklists.main-menu.links %}
+            <li class="header__mobile-nav-item">
+              <a href="{{ link.url }}" class="header__mobile-nav-link">
+                {{ link.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <!-- Default mobile navigation -->
+        <ul class="header__mobile-nav-list">
+          <li class="header__mobile-nav-item">
+            <a href="{{ routes.root_url }}" class="header__mobile-nav-link">Home</a>
+          </li>
+          <li class="header__mobile-nav-item">
+            <a href="{{ routes.collections_url }}" class="header__mobile-nav-link">Shop</a>
+          </li>
+          <li class="header__mobile-nav-item">
+            <a href="/pages/about" class="header__mobile-nav-link">About</a>
+          </li>
+          <li class="header__mobile-nav-item">
+            <a href="/pages/contact" class="header__mobile-nav-link">Contact</a>
+          </li>
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+{% comment %} 
+  Section Schema for Theme Editor 
+{% endcomment %}
+{% schema %}
+  {
+    "name": "Header",
+    "tag": "header",
+    "class": "section",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Header",
+        "category": "Header"
+      }
+    ]
+  }
+{% endschema %}
+
+{% comment %} Link the CSS files {% endcomment %}
+{{ 'header.css' | asset_url | stylesheet_tag }}
+{{ 'search-autocomplete.css' | asset_url | stylesheet_tag }}
+
+{% comment %} 
+  JavaScript for Mobile Menu Toggle and Search Autocomplete
+{% endcomment %}
+{{ 'search-autocomplete.js' | asset_url | script_tag }}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const mobileToggle = document.querySelector('.header__mobile-toggle');
+  const mobileNav = document.querySelector('.header__mobile-nav');
+  const header = document.querySelector('.header');
+  
+  if (mobileToggle && mobileNav) {
+    mobileToggle.addEventListener('click', function() {
+      header.classList.toggle('header--mobile-open');
+      mobileToggle.setAttribute('aria-expanded', 
+        header.classList.contains('header--mobile-open') ? 'true' : 'false'
+      );
+    });
+    
+    // Close mobile menu when clicking on a link
+    const mobileLinks = document.querySelectorAll('.header__mobile-nav-link');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        header.classList.remove('header--mobile-open');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+  });
+</script>

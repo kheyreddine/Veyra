@@ -1,0 +1,290 @@
+/**
+ * Search Autocomplete Styles
+ * Business Problem: Poor search UX leads to user frustration and abandoned searches
+ * Solution: Professional, accessible dropdown with smooth animations and responsive design
+ * Client Value: Enhanced user experience, improved search conversion rates
+ * Technical Achievement: CSS Grid/Flexbox, smooth transitions, mobile-first responsive design
+ */
+
+/* Search Autocomplete Dropdown Container */
+.search-autocomplete__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: 400px;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.15s ease-in-out;
+  margin-top: 4px;
+}
+
+.search-autocomplete__dropdown--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Search Autocomplete Items */
+.search-autocomplete__item {
+  border-bottom: 1px solid #f5f5f5;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.search-autocomplete__item:last-child {
+  border-bottom: none;
+}
+
+.search-autocomplete__item:hover,
+.search-autocomplete__item--selected {
+  background-color: #f8f9fa;
+}
+
+.search-autocomplete__item-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease-in-out;
+}
+
+.search-autocomplete__item-link:hover {
+  text-decoration: none;
+}
+
+/* Search Autocomplete Item Image */
+.search-autocomplete__item-image {
+  flex-shrink: 0;
+  margin-right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.search-autocomplete__item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Search Autocomplete Item Content */
+.search-autocomplete__item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-autocomplete__item-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111111;
+  margin-bottom: 2px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-autocomplete__item-price {
+  font-size: 13px;
+  color: #666666;
+  font-weight: 400;
+}
+
+/* Search Autocomplete States */
+.search-autocomplete__loading,
+.search-autocomplete__no-results,
+.search-autocomplete__error {
+  padding: 20px 16px;
+  text-align: center;
+  color: #666666;
+}
+
+.search-autocomplete__loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #111111;
+  border-radius: 50%;
+  animation: search-autocomplete-spin 1s linear infinite;
+  margin: 0 auto 8px;
+}
+
+@keyframes search-autocomplete-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.search-autocomplete__loading-text,
+.search-autocomplete__no-results-text,
+.search-autocomplete__error-text {
+  font-size: 14px;
+  color: #666666;
+}
+
+.search-autocomplete__error-text {
+  color: #dc3545;
+}
+
+/* Desktop Styles */
+@media (min-width: 1025px) {
+  .search-autocomplete__dropdown {
+    min-width: 400px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+  }
+
+  .search-autocomplete__dropdown--visible {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .search-autocomplete__item-link {
+    padding: 16px 20px;
+  }
+
+  .search-autocomplete__item-image {
+    width: 48px;
+    height: 48px;
+    margin-right: 16px;
+  }
+
+  .search-autocomplete__item-title {
+    font-size: 15px;
+  }
+
+  .search-autocomplete__item-price {
+    font-size: 14px;
+  }
+}
+
+/* Tablet Styles */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .search-autocomplete__dropdown {
+    min-width: 350px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+  }
+
+  .search-autocomplete__dropdown--visible {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .search-autocomplete__item-link {
+    padding: 14px 18px;
+  }
+
+  .search-autocomplete__item-image {
+    width: 44px;
+    height: 44px;
+    margin-right: 14px;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 640px) {
+  .search-autocomplete__dropdown {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 16px 16px 0 0;
+    border: none;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    max-height: 60vh;
+    margin-top: 0;
+    transform: translateY(100%);
+  }
+
+  .search-autocomplete__dropdown--visible {
+    transform: translateY(0);
+  }
+
+  .search-autocomplete__item-link {
+    padding: 16px 20px;
+  }
+
+  .search-autocomplete__item-image {
+    width: 48px;
+    height: 48px;
+    margin-right: 16px;
+  }
+
+  .search-autocomplete__item-title {
+    font-size: 15px;
+  }
+
+  .search-autocomplete__item-price {
+    font-size: 14px;
+  }
+
+  .search-autocomplete__loading,
+  .search-autocomplete__no-results,
+  .search-autocomplete__error {
+    padding: 32px 20px;
+  }
+}
+
+/* Focus and Accessibility */
+.search-autocomplete__item:focus-within {
+  background-color: #f8f9fa;
+  outline: 2px solid #111111;
+  outline-offset: -2px;
+}
+
+/* Scrollbar Styling */
+.search-autocomplete__dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-autocomplete__dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.search-autocomplete__dropdown::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.search-autocomplete__dropdown::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .search-autocomplete__dropdown {
+    border: 2px solid #000000;
+  }
+
+  .search-autocomplete__item {
+    border-bottom: 2px solid #000000;
+  }
+
+  .search-autocomplete__item:hover,
+  .search-autocomplete__item--selected {
+    background-color: #000000;
+    color: #ffffff;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .search-autocomplete__dropdown,
+  .search-autocomplete__item,
+  .search-autocomplete__item-link {
+    transition: none;
+  }
+
+  .search-autocomplete__loading-spinner {
+    animation: none;
+  }
+}

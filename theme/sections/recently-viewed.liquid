@@ -1,0 +1,86 @@
+{% comment %} 
+  Recently Viewed Products Section
+  Business Problem: Users lose track of products they've viewed, reducing re-engagement
+  Solution: Display recently viewed products to encourage return visits and purchases
+  Client Value: Increased product re-engagement, improved conversion rates
+  Technical Achievement: Local storage tracking, responsive grid layout, smooth animations 
+{% endcomment %}
+
+{% if section.settings.show_recently_viewed %}
+  <section class="recently-viewed section" data-section-id="{{ section.id }}">
+    <div class="container">
+      {% if section.settings.section_title != blank %}
+        <div class="recently-viewed__header">
+          <h2 class="recently-viewed__title">{{ section.settings.section_title }}</h2>
+        </div>
+      {% endif %}
+
+      <div class="recently-viewed__container">
+        <div
+          class="recently-viewed__grid"
+          id="recently-viewed-grid"
+          style="display: none;">
+          <!-- Products will be populated by JavaScript -->
+        </div>
+
+        <!-- Placeholder message when no products viewed -->
+        <div
+          class="recently-viewed__placeholder"
+          id="recently-viewed-placeholder"
+          style="display: none;">
+          <div class="recently-viewed__placeholder-content">
+            <svg
+              class="recently-viewed__placeholder-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5">
+              <path d="M15.75 10.5l4.72-4.72a.75.75 0 014.72 4.72l-4.72 4.72-4.72-4.72z" />
+              <path d="M8.25 10.5l4.72-4.72a.75.75 0 014.72 4.72l-4.72 4.72-4.72-4.72z" />
+              <path d="M1.25 10.5l4.72-4.72a.75.75 0 014.72 4.72l-4.72 4.72-4.72-4.72z" />
+            </svg>
+            <p class="recently-viewed__placeholder-text">Start browsing products to see your recently viewed items here</p>
+            <a href="{{ routes.collections_url }}" class="recently-viewed__placeholder-button">Browse Products</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% comment %} 
+  Section Schema for Theme Editor 
+{% endcomment %}
+{% schema %}
+  {
+    "name": "Recently Viewed Products",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "section_title",
+        "label": "Section Title",
+        "default": "Recently Viewed",
+        "info": "Title displayed above the recently viewed products"
+      }, {
+        "type": "checkbox",
+        "id": "show_recently_viewed",
+        "label": "Show Recently Viewed Products",
+        "default": true,
+        "info": "Toggle to show/hide this section"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Recently Viewed Products",
+        "category": "Product"
+      }
+    ]
+  }{% endschema %}
+
+{% comment %} 
+  Link the CSS and JavaScript files 
+{% endcomment %}
+{{ 'recently-viewed.css' | asset_url | stylesheet_tag }}
+{{ 'recently-viewed.js' | asset_url | script_tag }}

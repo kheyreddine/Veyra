@@ -1,0 +1,20 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "primary_color": "#0066cc",
+    "secondary_color": "#333333",
+    "accent_color": "#f8f9fa",
+    "heading_font": "helvetica_n4",
+    "body_font": "helvetica_n4",
+    "container_max_width": 1200,
+    "content_for_index": []
+  }
+}

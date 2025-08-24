@@ -1,0 +1,361 @@
+{% comment %} 
+          Main Cart Section 
+          - Displays cart items in a table layout with quantity controls 
+          - Cart summary with subtotal and checkout button 
+          - Responsive design: two-column on desktop, stacked on mobile 
+          - Uses Shopify cart object and forms for functionality 
+{% endcomment %}
+
+<section class="main-cart">
+  <div class="container">
+
+    <!-- Cart Header -->
+    <div class="main-cart__header">
+      <h1 class="main-cart__title">Your Cart</h1>
+    </div>
+
+    {% if cart.item_count > 0 %}
+      <div class="main-cart__layout">
+
+        <!-- Cart Items (Left Column) -->
+        <div class="main-cart__items">
+
+          <!-- Cart Items Table -->
+          <form
+            action="/cart"
+            method="post"
+            class="main-cart__form">
+            <div class="main-cart__table">
+
+              <!-- Table Header -->
+              <div class="main-cart__table-header">
+                <div class="main-cart__table-cell main-cart__table-cell--product">Product</div>
+                <div class="main-cart__table-cell main-cart__table-cell--price">Price</div>
+                <div class="main-cart__table-cell main-cart__table-cell--quantity">Quantity</div>
+                <div class="main-cart__table-cell main-cart__table-cell--total">Total</div>
+                <div class="main-cart__table-cell main-cart__table-cell--remove"></div>
+              </div>
+
+              <!-- Cart Items Loop -->
+              {% for item in cart.items %}
+                <div class="main-cart__item" data-item-key="{{ item.key }}">
+
+                  <!-- Product Image and Info -->
+                  <div class="main-cart__table-cell main-cart__table-cell--product">
+                    <div class="main-cart__product">
+                      <a href="{{ item.url }}" class="main-cart__product-image">
+                        {% if item.image %}
+                          <img
+                            src="{{ item.image | image_url: width: 80 }}"
+                            alt="{{ item.image.alt | escape }}"
+                            class="main-cart__product-thumbnail"
+                            loading="lazy">
+                        {% else %}
+                          <div class="main-cart__product-placeholder">
+                            <span>No image</span>
+                          </div>
+                        {% endif %}
+                      </a>
+
+                      <div class="main-cart__product-details">
+                        <h3 class="main-cart__product-title">
+                          <a href="{{ item.url }}" class="main-cart__product-link">
+                            {{ item.product.title }}
+                          </a>
+                        </h3>
+
+                        {% if item.product.has_only_default_variant == false %}
+                          <p class="main-cart__product-variant">
+                            {{ item.variant.title }}
+                          </p>
+                        {% endif %}
+
+                        {% if item.properties.size > 0 %}
+                          <div class="main-cart__product-properties">
+                            {% for property in item.properties %}
+                              {% unless property.first == '_' %}
+                                <span class="main-cart__product-property">
+                                  {{ property.first }}: {{ property.last }}
+                                </span>
+                              {% endunless %}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Price Per Item -->
+                  <div class="main-cart__table-cell main-cart__table-cell--price">
+                    <span class="main-cart__item-price">
+                      {% if item.original_price != item.final_price %}
+                        <span class="main-cart__item-price-compare">{{ item.original_price | money }}</span>
+                      {% endif %}
+                      {{ item.final_price | money }}
+                    </span>
+                  </div>
+
+                  <!-- Quantity Selector -->
+                  <div class="main-cart__table-cell main-cart__table-cell--quantity">
+                    <div class="main-cart__quantity-controls">
+                      <button
+                        type="button"
+                        class="main-cart__quantity-btn"
+                        data-action="decrease"
+                        data-item-key="{{ item.key }}">
+                        -
+                      </button>
+                      <input
+                        type="number"
+                        name="updates[]"
+                        value="{{ item.quantity }}"
+                        min="1"
+                        class="main-cart__quantity-input"
+                        data-item-key="{{ item.key }}">
+                      <button
+                        type="button"
+                        class="main-cart__quantity-btn"
+                        data-action="increase"
+                        data-item-key="{{ item.key }}">
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Line Total -->
+                  <div class="main-cart__table-cell main-cart__table-cell--total">
+                    <span class="main-cart__item-total">
+                      {% if item.original_line_price != item.final_line_price %}
+                        <span class="main-cart__item-total-compare">{{ item.original_line_price | money }}</span>
+                      {% endif %}
+                      {{ item.final_line_price | money }}
+                    </span>
+                  </div>
+
+                  <!-- Remove Item -->
+                  <div class="main-cart__table-cell main-cart__table-cell--remove">
+                    <button
+                      type="button"
+                      class="main-cart__remove-btn"
+                      data-action="remove"
+                      data-item-key="{{ item.key }}"
+                      aria-label="Remove {{ item.product.title }}">
+                      <svg
+                        class="main-cart__remove-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M18 6L6 18M6 6L18 18"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round" />
+                      </svg>
+                    </button>
+                  </div>
+
+                </div>
+              {% endfor %}
+
+            </div>
+
+            <!-- Update Cart Button -->
+            <div class="main-cart__actions">
+              <button
+                type="submit"
+                name="update"
+                class="main-cart__update-btn">
+                Update Cart
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+        <!-- Cart Summary (Right Column) -->
+        <div class="main-cart__summary">
+          <div class="main-cart__summary-content">
+            <h2 class="main-cart__summary-title">Order Summary</h2>
+
+            <!-- Cart Totals -->
+            <div class="main-cart__totals">
+              <div class="main-cart__total-row">
+                <span class="main-cart__total-label">Subtotal</span>
+                <span class="main-cart__total-value">{{ cart.total_price | money }}</span>
+              </div>
+
+              {% if cart.total_discounts > 0 %}
+                <div class="main-cart__total-row main-cart__total-row--discount">
+                  <span class="main-cart__total-label">Discounts</span>
+                  <span class="main-cart__total-value">-{{ cart.total_discounts | money }}</span>
+                </div>
+              {% endif %}
+
+              <div class="main-cart__total-row main-cart__total-row--final">
+                <span class="main-cart__total-label">Total</span>
+                <span class="main-cart__total-value">{{ cart.total_price | money }}</span>
+              </div>
+            </div>
+
+            <!-- Checkout Button -->
+            <div class="main-cart__checkout">
+              <a href="/checkout" class="main-cart__checkout-btn">
+                Proceed to Checkout
+              </a>
+            </div>
+
+            <!-- Continue Shopping -->
+            <div class="main-cart__continue">
+              <a href="/collections/all" class="main-cart__continue-link">
+                Continue Shopping
+              </a>
+            </div>
+
+            <!-- Cart Notes -->
+            <div class="main-cart__notes">
+              <p class="main-cart__notes-text">
+                Shipping & taxes calculated at checkout
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    {% else %}
+      <!-- Empty Cart State -->
+      <div class="main-cart__empty">
+        <div class="main-cart__empty-content">
+          <h2 class="main-cart__empty-title">Your cart is empty</h2>
+          <p class="main-cart__empty-text">
+            Looks like you haven't added any items to your cart yet.
+          </p>
+          <a href="/collections/all" class="main-cart__empty-btn">
+            Start Shopping
+          </a>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% comment %} 
+          Section Schema for Theme Editor 
+{% endcomment %}
+{% schema %}
+  {
+    "name": "Main Cart",
+    "tag": "section",
+    "class": "section",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Main Cart",
+        "category": "Cart"
+      }
+    ]
+  }{% endschema %}
+
+{% comment %} Link the CSS file {% endcomment %}
+{{ 'main-cart.css' | asset_url | stylesheet_tag }}
+
+{% comment %} 
+          JavaScript for Cart Functionality 
+{% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const cartForm = document.querySelector('.main-cart__form');
+  
+  if (cartForm) {
+    // Handle quantity changes
+    const quantityBtns = document.querySelectorAll('.main-cart__quantity-btn');
+    const quantityInputs = document.querySelectorAll('.main-cart__quantity-input');
+    
+    quantityBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const action = this.dataset.action;
+        const itemKey = this.dataset.itemKey;
+        const input = document.querySelector(`input[data-item-key="${itemKey}"]`);
+        
+        if (input) {
+          let currentValue = parseInt(input.value);
+          
+          if (action === 'decrease' && currentValue > 1) {
+            input.value = currentValue - 1;
+          } else if (action === 'increase') {
+            input.value = currentValue + 1;
+          }
+          
+          // Trigger form update
+          updateCart();
+        }
+      });
+    });
+    
+    // Handle remove items
+    const removeBtns = document.querySelectorAll('.main-cart__remove-btn');
+    
+    removeBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const itemKey = this.dataset.itemKey;
+        removeItem(itemKey);
+      });
+    });
+    
+    // Handle quantity input changes
+    quantityInputs.forEach(input => {
+      input.addEventListener('change', function() {
+        updateCart();
+      });
+    });
+  }
+  
+  // Function to update cart
+  function updateCart() {
+    const formData = new FormData(cartForm);
+    formData.append('update', '');
+    
+    fetch('/cart/update.js', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Reload page to show updated cart
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error('Error updating cart:', error);
+    });
+  }
+  
+  // Function to remove item
+  function removeItem(itemKey) {
+    // Use the correct Shopify cart change API
+    const formData = new FormData();
+    formData.append('id', itemKey);
+    formData.append('quantity', '0');
+    
+    fetch('/cart/change.js', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Item removed successfully:', data);
+      // Reload page to show updated cart
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error('Error removing item:', error);
+      alert('Failed to remove item. Please try again.');
+    });
+  }
+  });
+</script>

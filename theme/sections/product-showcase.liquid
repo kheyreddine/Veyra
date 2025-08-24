@@ -1,0 +1,373 @@
+{% comment %} 
+                                  Simple Product Showcase Section
+                                  - Shows 4 products with variants in a clean grid
+                                  - Only displays products that have variants
+                                  - Quick view modal functionality
+                                  - Portfolio-ready but simple and functional
+{% endcomment %}
+
+<section
+  class="product-showcase"
+  data-section-id="{{ section.id }}"
+  data-section-type="product-showcase">
+  <div class="product-showcase__container">
+    <!-- Section Header -->
+    <div class="product-showcase__header">
+      <h2 class="product-showcase__title">{{ section.settings.title | default: 'Featured Products' }}</h2>
+      {% if section.settings.subtitle %}
+        <p class="product-showcase__subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Simple Product Grid - Only products with variants -->
+    <div class="product-showcase__grid">
+      {% comment %} Display products directly from collections.all.products {% endcomment %}
+
+      {% comment %} Method 1: Show products from collections.all.products (with or without variants) {% endcomment %}
+      {% if collections.all.products.size > 0 %}
+        {% for product in collections.all.products limit: 4 %}
+          <article class="product-showcase__item" data-product-id="{{ product.id }}">
+            <div class="product-showcase__card">
+              <!-- Product Image -->
+              <div class="product-showcase__image-wrapper">
+                <img
+                  class="product-showcase__image"
+                  src="{{ product.featured_image | img_url: '300x375', crop: 'center' }}"
+                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                  width="300"
+                  height="375"
+                  loading="lazy">
+
+                <!-- Quick View Overlay -->
+                <div class="product-showcase__quick-view-overlay">
+                  <button
+                    class="product-showcase__quick-view-btn"
+                    data-product-id="{{ product.id }}"
+                    aria-label="Quick view {{ product.title }}">
+                    Quick View
+                  </button>
+                </div>
+              </div>
+
+              <!-- Product Information - Product Name & Add to Cart -->
+              <div class="product-showcase__info">
+                <h3 class="product-showcase__product-title">{{ product.title }}</h3>
+                <form
+                  action="/cart/add"
+                  method="post"
+                  class="product-showcase__form">
+                  <input
+                    type="hidden"
+                    name="id"
+                    value="{{ product.selected_or_first_available_variant.id }}">
+                  <button type="submit" class="product-showcase__add-to-cart">
+                    Add to Cart
+                  </button>
+                </form>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        {% comment %} Method 2: Fallback to all_products if collections.all is empty {% endcomment %}
+        {% for product in all_products limit: 4 %}
+          <article class="product-showcase__item" data-product-id="{{ product.id }}">
+            <div class="product-showcase__card">
+              <!-- Product Image -->
+              <div class="product-showcase__image-wrapper">
+                <img
+                  class="product-showcase__image"
+                  src="{{ product.featured_image | img_url: '300x375', crop: 'center' }}"
+                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                  width="300"
+                  height="375"
+                  loading="lazy">
+
+                <!-- Quick View Overlay -->
+                <div class="product-showcase__quick-view-overlay">
+                  <button
+                    class="product-showcase__quick-view-btn"
+                    data-product-id="{{ product.id }}"
+                    aria-label="Quick view {{ product.title }}">
+                    Quick View
+                  </button>
+                </div>
+              </div>
+
+              <!-- Product Information - Product Name & Add to Cart -->
+              <div class="product-showcase__info">
+                <h3 class="product-showcase__product-title">{{ product.title }}</h3>
+                <form
+                  action="/cart/add"
+                  method="post"
+                  class="product-showcase__form">
+                  <input
+                    type="hidden"
+                    name="id"
+                    value="{{ product.selected_or_first_available_variant.id }}">
+                  <button type="submit" class="product-showcase__add-to-cart">
+                    Add to Cart
+                  </button>
+                </form>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      {% endif %}
+
+
+    </div>
+  </div>
+
+  <!-- Quick View Modal -->
+  <div
+    id="quick-view-modal"
+    class="product-showcase__modal"
+    style="display: none;">
+    <div class="product-showcase__modal-overlay"></div>
+    <div class="product-showcase__modal-content">
+      <button class="product-showcase__modal-close" aria-label="Close quick view">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M18 6L6 18M6 6L18 18"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+      <div class="product-showcase__modal-body">
+        <div class="product-showcase__modal-image">
+          <img
+            id="modal-product-image"
+            src=""
+            alt=""
+            loading="lazy">
+        </div>
+        <div class="product-showcase__modal-info">
+          <h3 id="modal-product-title"></h3>
+          <div id="modal-product-price"></div>
+          <div id="modal-product-description"></div>
+          <div id="modal-product-variants"></div>
+          <form
+            action="/cart/add"
+            method="post"
+            class="product-showcase__form">
+            <input
+              type="hidden"
+              name="id"
+              id="modal-product-variant-id"
+              value="">
+            <button
+              type="submit"
+              id="modal-add-to-cart"
+              class="product-showcase__add-to-cart">
+              Add to Cart
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div></section>
+
+<!-- Link to section-specific CSS -->
+{{ 'product-showcase.css' | asset_url | stylesheet_tag }}
+
+<!-- Simple JavaScript for quick view modal -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Simple Product Showcase: Initializing quick view functionality');
+    
+    // Initialize quick view functionality
+    initializeQuickView();
+  });
+  
+  function initializeQuickView() {
+    const productCards = document.querySelectorAll('.product-showcase__item');
+    
+    productCards.forEach(card => {
+      // Quick view functionality
+      const quickViewBtn = card.querySelector('.product-showcase__quick-view-btn');
+      if (quickViewBtn) {
+        quickViewBtn.addEventListener('click', function() {
+          const productId = this.dataset.productId;
+          console.log('👁️ Quick view clicked for product:', productId);
+          
+          // Show quick view modal
+          showQuickViewModal(productId);
+        });
+      }
+      
+      // Add to cart functionality - now handled by forms, no JavaScript needed
+    });
+  }
+  
+  // Add to cart now handled by native Shopify forms - no JavaScript needed
+  function addToCart(productId, quantity, buttonElement) {
+    console.log('🚀 Adding product to cart:', productId, 'quantity:', quantity);
+    console.log('🚀 Product ID type:', typeof productId);
+    console.log('🚀 Button element:', buttonElement);
+    
+    // Create form data for Shopify Cart API
+    const formData = new FormData();
+    formData.append('id', productId);
+    formData.append('quantity', quantity);
+    
+    // Make API call to add item to cart
+    fetch('/cart/add.js', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('✅ Product added to cart successfully:', data);
+      
+      // Update button to show success
+      buttonElement.style.opacity = '1';
+      buttonElement.textContent = 'Added!';
+      buttonElement.style.backgroundColor = '#10b981'; // Green success color
+      
+      // Update cart count if it exists
+      updateCartCount();
+      
+      // Reset button after delay
+      setTimeout(() => {
+        buttonElement.textContent = 'Add to Cart';
+        buttonElement.style.backgroundColor = '#111111'; // Reset to original color
+      }, 2000);
+    })
+    .catch(error => {
+      console.error('❌ Error adding to cart:', error);
+      
+      // Show error state
+      buttonElement.style.opacity = '1';
+      buttonElement.textContent = 'Error!';
+      buttonElement.style.backgroundColor = '#ef4444'; // Red error color
+      
+      // Reset button after delay
+      setTimeout(() => {
+        buttonElement.textContent = 'Add to Cart';
+        buttonElement.style.backgroundColor = '#111111'; // Reset to original color
+      }, 2000);
+    });
+  }
+  
+  // Update cart count in header (if cart count element exists)
+  function updateCartCount() {
+    const cartCountElement = document.querySelector('.cart-count, .cart-count-badge');
+    if (cartCountElement) {
+      // Fetch current cart to get updated count
+      fetch('/cart.js')
+        .then(response => response.json())
+        .then(cart => {
+          cartCountElement.textContent = cart.item_count;
+          cartCountElement.style.display = cart.item_count > 0 ? 'block' : 'none';
+        })
+        .catch(error => console.error('Error updating cart count:', error));
+    }
+  }
+  
+  // Quick View Modal Functions
+  function showQuickViewModal(productId) {
+    const modal = document.getElementById('quick-view-modal');
+    const modalImage = document.getElementById('modal-product-image');
+    const modalTitle = document.getElementById('modal-product-title');
+    const modalPrice = document.getElementById('modal-product-price');
+    const modalDescription = document.getElementById('modal-product-description');
+    const modalVariants = document.getElementById('modal-product-variants');
+    const modalAddToCartBtn = document.getElementById('modal-add-to-cart');
+    
+    // Find the product card to get data
+    const productCard = document.querySelector(`[data-product-id="${productId}"]`);
+    if (!productCard) return;
+    
+    // Get product data from the card
+    const productImage = productCard.querySelector('.product-showcase__image');
+    const productTitle = productCard.querySelector('.product-showcase__product-title');
+    
+    // Populate modal
+    modalImage.src = productImage.src;
+    modalImage.alt = productImage.alt;
+    
+    // Set up modal Add to Cart form with variant ID
+    const modalVariantInput = document.getElementById('modal-product-variant-id');
+    if (modalVariantInput) {
+      // Get the variant ID from the product card's form
+      const productForm = productCard.querySelector('.product-showcase__form input[name="id"]');
+      if (productForm) {
+        modalVariantInput.value = productForm.value;
+      }
+    }
+    modalTitle.textContent = productTitle.textContent;
+    modalPrice.innerHTML = '<span class="product-showcase__price--regular">$49.99</span>';
+    modalDescription.innerHTML = '<p>Quick view of this amazing product. Click "Add to Cart" to purchase.</p>';
+    modalVariants.innerHTML = '<p>Variants available in quick view</p>';
+    
+    // Show modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  
+  function hideQuickViewModal() {
+    const modal = document.getElementById('quick-view-modal');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+  
+  // Modal event listeners
+  document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('quick-view-modal');
+    const modalOverlay = modal.querySelector('.product-showcase__modal-overlay');
+    const modalClose = modal.querySelector('.product-showcase__modal-close');
+    
+    // Close modal on overlay click
+    modalOverlay.addEventListener('click', hideQuickViewModal);
+    
+    // Close modal on close button click
+    modalClose.addEventListener('click', hideQuickViewModal);
+    
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        hideQuickViewModal();
+      }
+    });
+  });
+</script>
+
+{% schema %}
+  {
+    "name": "Simple Product Showcase",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Section Title",
+        "default": "Featured Products"
+      }, {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Section Subtitle",
+        "default": "Discover our latest collection"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Simple Product Showcase",
+        "category": "Products"
+      }
+    ]
+  }
+{% endschema %}

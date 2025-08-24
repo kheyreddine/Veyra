@@ -1,0 +1,404 @@
+/* Contact Form Section Styles */
+
+/* Desktop Styles */
+.contact-form {
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  background-color: var(--color-white);
+  min-height: 100vh;
+}
+
+.contact-form__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Page Header */
+.contact-form__header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.contact-form__title {
+  font-family: var(--font-heading);
+  font-size: 48px;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin: 0 0 var(--spacing-lg) 0;
+  letter-spacing: 2px;
+}
+
+.contact-form__subtitle {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-gray-medium);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Content Layout */
+.contact-form__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-bottom: 80px;
+}
+
+/* Form Styles */
+.contact-form__form-wrapper {
+  background-color: #f8f8f8;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.contact-form__field-group {
+  margin-bottom: 24px;
+}
+
+.contact-form__label {
+  display: block;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.contact-form__required {
+  color: #d32f2f;
+  margin-left: 4px;
+}
+
+.contact-form__input,
+.contact-form__textarea {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  color: #000000;
+  background-color: #ffffff;
+  transition: all 0.3s ease-in-out;
+  box-sizing: border-box;
+}
+
+.contact-form__input:focus,
+.contact-form__textarea:focus {
+  outline: none;
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form__input::placeholder,
+.contact-form__textarea::placeholder {
+  color: #999999;
+}
+
+.contact-form__textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+}
+
+.contact-form__button {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  border: 2px solid var(--color-accent);
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--border-radius-pill);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  width: 100%;
+  margin-top: var(--spacing-md);
+}
+
+.contact-form__button:hover {
+  background-color: var(--color-white);
+  color: var(--color-accent);
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-form__button:disabled {
+  background-color: #cccccc;
+  border-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Contact Information */
+.contact-form__info {
+  padding: 40px 0;
+}
+
+.contact-form__info-title {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 40px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.contact-form__info-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  padding: 24px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.contact-form__info-item:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form__info-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background-color: #000000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  color: #ffffff;
+}
+
+.contact-form__info-content {
+  flex: 1;
+}
+
+.contact-form__info-label {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contact-form__info-text,
+.contact-form__info-link {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  color: #666666;
+  margin: 0;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.contact-form__info-link:hover {
+  color: #000000;
+}
+
+/* Google Maps */
+.contact-form__map-wrapper {
+  text-align: center;
+}
+
+.contact-form__map-title {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 30px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.contact-form__map {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.contact-form__map iframe {
+  display: block;
+}
+
+/* Tablet Styles */
+@media (max-width: 1024px) {
+  .contact-form {
+    padding: 50px 20px;
+  }
+  
+  .contact-form__title {
+    font-size: 40px;
+  }
+  
+  .contact-form__subtitle {
+    font-size: 18px;
+  }
+  
+  .contact-form__content {
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+  
+  .contact-form__form-wrapper {
+    padding: 30px;
+  }
+  
+  .contact-form__info-item {
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .contact-form__info-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 640px) {
+  .contact-form {
+    padding: 40px 15px;
+  }
+  
+  .contact-form__title {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+  
+  .contact-form__subtitle {
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+  
+  .contact-form__content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  
+  .contact-form__form-wrapper {
+    padding: 24px;
+  }
+  
+  .contact-form__field-group {
+    margin-bottom: 20px;
+  }
+  
+  .contact-form__input,
+  .contact-form__textarea {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+  
+  .contact-form__button {
+    padding: 14px 24px;
+    font-size: 14px;
+  }
+  
+  .contact-form__info {
+    padding: 20px 0;
+  }
+  
+  .contact-form__info-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+  
+  .contact-form__info-item {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .contact-form__info-icon {
+    width: 36px;
+    height: 36px;
+    margin-right: 12px;
+  }
+  
+  .contact-form__info-label {
+    font-size: 16px;
+  }
+  
+  .contact-form__info-text,
+  .contact-form__info-link {
+    font-size: 14px;
+  }
+  
+  .contact-form__map-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+}
+
+/* Form Validation Styles */
+.contact-form__input:invalid,
+.contact-form__textarea:invalid {
+  border-color: #d32f2f;
+}
+
+.contact-form__input:valid,
+.contact-form__textarea:valid {
+  border-color: #4caf50;
+}
+
+/* Focus States for Accessibility */
+.contact-form__input:focus,
+.contact-form__textarea:focus,
+.contact-form__button:focus {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+/* Animation for form fields */
+.contact-form__input,
+.contact-form__textarea {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger animation for form fields */
+.contact-form__field-group:nth-child(1) .contact-form__input,
+.contact-form__field-group:nth-child(1) .contact-form__textarea {
+  animation-delay: 0.1s;
+}
+
+.contact-form__field-group:nth-child(2) .contact-form__input,
+.contact-form__field-group:nth-child(2) .contact-form__textarea {
+  animation-delay: 0.2s;
+}
+
+.contact-form__field-group:nth-child(3) .contact-form__input,
+.contact-form__field-group:nth-child(3) .contact-form__textarea {
+  animation-delay: 0.3s;
+}
+
+.contact-form__field-group:nth-child(4) .contact-form__input,
+.contact-form__field-group:nth-child(4) .contact-form__textarea {
+  animation-delay: 0.4s;
+}

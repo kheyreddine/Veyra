@@ -1,0 +1,340 @@
+{% comment %} 
+    Color Swatch Snippet 
+    - Generates appropriate colors for product variants 
+    - Handles special cases like multi-color and pattern variants 
+    - Portfolio-ready color management system 
+{% endcomment %}
+
+{% assign color_handle = color_name | handleize %}
+{% case color_handle %}
+  {% when 'blue' %}
+    #3b82f6
+  {% when 'grey' or 'gray' %}
+    #6b7280
+  {% when 'yellow' %}
+    #eab308
+  {% when 'white' %}
+    #ffffff
+  {% when 'black-red' or 'blackred' %}
+    linear-gradient(45deg, #111111 50%, #dc2626 50%)
+  {% when 'black' %}
+    #111111
+  {% when 'red' %}
+    #dc2626
+  {% when 'green' %}
+    #16a34a
+  {% when 'purple' %}
+    #9333ea
+  {% when 'pink' %}
+    #ec4899
+  {% when 'orange' %}
+    #ea580c
+  {% when 'brown' %}
+    #92400e
+  {% when 'navy' %}
+    #1e40af
+  {% when 'indigo' %}
+    #6366f1
+  {% when 'olive' %}
+    #65a30d
+  {% when 'teal' %}
+    #0d9488
+  {% when 'coral' %}
+    #f97316
+  {% when 'lavender' %}
+    #a78bfa
+  {% when 'mint' %}
+    #10b981
+  {% when 'rose' %}
+    #f43f5e
+  {% when 'indigo' %}
+    #6366f1
+  {% when 'amber' %}
+    #f59e0b
+  {% when 'emerald' %}
+    #059669
+  {% when 'cyan' %}
+    #0891b2
+  {% when 'lime' %}
+    #84cc16
+  {% when 'violet' %}
+    #8b5cf6
+  {% when 'fuchsia' %}
+    #d946ef
+  {% when 'sky' %}
+    #0ea5e9
+  {% when 'slate' %}
+    #64748b
+  {% when 'zinc' %}
+    #71717a
+  {% when 'neutral' %}
+    #737373
+  {% when 'stone' %}
+    #78716c
+  {% when 'red-50' %}
+    #fef2f2
+  {% when 'red-100' %}
+    #fee2e2
+  {% when 'red-200' %}
+    #fecaca
+  {% when 'red-300' %}
+    #fca5a5
+  {% when 'red-400' %}
+    #f87171
+  {% when 'red-500' %}
+    #ef4444
+  {% when 'red-600' %}
+    #dc2626
+  {% when 'red-700' %}
+    #b91c1c
+  {% when 'red-800' %}
+    #991b1b
+  {% when 'red-900' %}
+    #7f1d1d
+  {% when 'red-950' %}
+    #450a0a
+  {% when 'blue-50' %}
+    #eff6ff
+  {% when 'blue-100' %}
+    #dbeafe
+  {% when 'blue-200' %}
+    #bfdbfe
+  {% when 'blue-300' %}
+    #93c5fd
+  {% when 'blue-400' %}
+    #60a5fa
+  {% when 'blue-500' %}
+    #3b82f6
+  {% when 'blue-600' %}
+    #2563eb
+  {% when 'blue-700' %}
+    #1d4ed8
+  {% when 'blue-800' %}
+    #1e40af
+  {% when 'blue-900' %}
+    #1e3a8a
+  {% when 'blue-950' %}
+    #172554
+  {% when 'green-50' %}
+    #f0fdf4
+  {% when 'green-100' %}
+    #dcfce7
+  {% when 'green-200' %}
+    #bbf7d0
+  {% when 'green-300' %}
+    #86efac
+  {% when 'green-400' %}
+    #4ade80
+  {% when 'green-500' %}
+    #22c55e
+  {% when 'green-600' %}
+    #16a34a
+  {% when 'green-700' %}
+    #15803d
+  {% when 'green-800' %}
+    #166534
+  {% when 'green-900' %}
+    #14532d
+  {% when 'green-950' %}
+    #052e16
+  {% when 'yellow-50' %}
+    #fefce8
+  {% when 'yellow-100' %}
+    #fef3c7
+  {% when 'yellow-200' %}
+    #fde68a
+  {% when 'yellow-300' %}
+    #fcd34d
+  {% when 'yellow-400' %}
+    #fbbf24
+  {% when 'yellow-500' %}
+    #f59e0b
+  {% when 'yellow-600' %}
+    #d97706
+  {% when 'yellow-700' %}
+    #b45309
+  {% when 'yellow-800' %}
+    #92400e
+  {% when 'yellow-900' %}
+    #78350f
+  {% when 'yellow-950' %}
+    #451a03
+  {% when 'purple-50' %}
+    #faf5ff
+  {% when 'purple-100' %}
+    #f3e8ff
+  {% when 'purple-200' %}
+    #e9d5ff
+  {% when 'purple-300' %}
+    #d8b4fe
+  {% when 'purple-400' %}
+    #c084fc
+  {% when 'purple-500' %}
+    #a855f7
+  {% when 'purple-600' %}
+    #9333ea
+  {% when 'purple-700' %}
+    #7c3aed
+  {% when 'purple-800' %}
+    #6b21a8
+  {% when 'purple-900' %}
+    #581c87
+  {% when 'purple-950' %}
+    #3b0764
+  {% when 'pink-50' %}
+    #fdf2f8
+  {% when 'pink-100' %}
+    #fce7f3
+  {% when 'pink-200' %}
+    #fbcfe8
+  {% when 'pink-300' %}
+    #f9a8d4
+  {% when 'pink-400' %}
+    #f472b6
+  {% when 'pink-500' %}
+    #ec4899
+  {% when 'pink-600' %}
+    #db2777
+  {% when 'pink-700' %}
+    #be185d
+  {% when 'pink-800' %}
+    #9d174d
+  {% when 'pink-900' %}
+    #831843
+  {% when 'pink-950' %}
+    #500724
+  {% when 'indigo-50' %}
+    #eef2ff
+  {% when 'indigo-100' %}
+    #e0e7ff
+  {% when 'indigo-200' %}
+    #c7d2fe
+  {% when 'indigo-300' %}
+    #a5b4fc
+  {% when 'indigo-400' %}
+    #818cf8
+  {% when 'indigo-500' %}
+    #6366f1
+  {% when 'indigo-600' %}
+    #4f46e5
+  {% when 'indigo-700' %}
+    #4338ca
+  {% when 'indigo-800' %}
+    #3730a3
+  {% when 'indigo-900' %}
+    #312e81
+  {% when 'indigo-950' %}
+    #1e1b4b
+  {% when 'gray-50' or 'grey-50' %}
+    #f9fafb
+  {% when 'gray-100' or 'grey-100' %}
+    #f3f4f6
+  {% when 'gray-200' or 'grey-200' %}
+    #e5e7eb
+  {% when 'gray-300' or 'grey-300' %}
+    #d1d5db
+  {% when 'gray-400' or 'grey-400' %}
+    #9ca3af
+  {% when 'gray-500' or 'grey-500' %}
+    #6b7280
+  {% when 'gray-600' or 'grey-600' %}
+    #4b5563
+  {% when 'gray-700' or 'grey-700' %}
+    #374151
+  {% when 'gray-800' or 'grey-800' %}
+    #1f2937
+  {% when 'gray-900' or 'grey-900' %}
+    #111827
+  {% when 'gray-950' or 'grey-950' %}
+    #030712
+  {% when 'slate-50' %}
+    #f8fafc
+  {% when 'slate-100' %}
+    #f1f5f9
+  {% when 'slate-200' %}
+    #e2e8f0
+  {% when 'slate-300' %}
+    #cbd5e1
+  {% when 'slate-400' %}
+    #94a3b8
+  {% when 'slate-500' %}
+    #64748b
+  {% when 'slate-600' %}
+    #475569
+  {% when 'slate-700' %}
+    #334155
+  {% when 'slate-800' %}
+    #1e293b
+  {% when 'slate-900' %}
+    #0f172a
+  {% when 'slate-950' %}
+    #020617
+  {% when 'zinc-50' %}
+    #fafafa
+  {% when 'zinc-100' %}
+    #f4f4f5
+  {% when 'zinc-200' %}
+    #e4e4e7
+  {% when 'zinc-300' %}
+    #d4d4d8
+  {% when 'zinc-400' %}
+    #a1a1aa
+  {% when 'zinc-500' %}
+    #71717a
+  {% when 'zinc-600' %}
+    #52525b
+  {% when 'zinc-700' %}
+    #3f3f46
+  {% when 'zinc-800' %}
+    #27272a
+  {% when 'zinc-900' %}
+    #18181b
+  {% when 'zinc-950' %}
+    #09090b
+  {% when 'neutral-50' %}
+    #fafafa
+  {% when 'neutral-100' %}
+    #f5f5f5
+  {% when 'neutral-200' %}
+    #e5e5e5
+  {% when 'neutral-300' %}
+    #d4d4d4
+  {% when 'neutral-400' %}
+    #a3a3a3
+  {% when 'neutral-500' %}
+    #737373
+  {% when 'neutral-600' %}
+    #525252
+  {% when 'neutral-700' %}
+    #404040
+  {% when 'neutral-800' %}
+    #262626
+  {% when 'neutral-900' %}
+    #171717
+  {% when 'neutral-950' %}
+    #0a0a0a
+  {% when 'stone-50' %}
+    #fafaf9
+  {% when 'stone-100' %}
+    #f5f5f4
+  {% when 'stone-200' %}
+    #e7e5e4
+  {% when 'stone-300' %}
+    #d6d3d1
+  {% when 'stone-400' %}
+    #a8a29e
+  {% when 'stone-500' %}
+    #78716c
+  {% when 'stone-600' %}
+    #57534e
+  {% when 'stone-700' %}
+    #44403c
+  {% when 'stone-800' %}
+    #292524
+  {% when 'stone-900' %}
+    #1c1917
+  {% when 'stone-950' %}
+    #0c0a09
+  {% else %}
+    #6b7280
+{% endcase %}

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+      <!-- Preload critical resources for performance -->
+    <link
+      rel="preload"
+      href="{{ 'base.css' | asset_url }}"
+      as="style">
+    <link
+      rel="preload"
+      href="{{ 'header.css' | asset_url }}"
+      as="style">
+    <link
+      rel="preload"
+      href="{{ 'performance.js' | asset_url }}"
+      as="script">
+    <link
+      rel="preload"
+      href="{{ 'service-worker.js' | asset_url }}"
+      as="script">
+
+      <!-- Preload critical fonts for performance -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      as="style">
+
+    <!-- Critical CSS Inlining for above-the-fold content -->
+    <style>
+      /* Critical CSS for instant rendering */
+      body {
+        font-family: system-ui
+        , -apple-system
+        , BlinkMacSystemFont
+        , "Segoe UI"
+        , Roboto
+        , sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .header {
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 1000;
+      }
+      .hero {
+        background: #f5f5f5;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero__title {
+        font-size: 48px;
+        font-weight: 700;
+        text-align: center;
+        margin: 0;
+      }
+      .hero__subtitle {
+        font-size: 20px;
+        text-align: center;
+        margin: 16px 0;
+      }
+      .hero__button {
+        padding: 16px 32px;
+        background: #e63946;
+        color: #fff;
+        border: none;
+        border-radius: 9999px;
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      /* Hardware acceleration for smooth animations */
+      .header,
+      .hero__button,
+      .product-card__image {
+        will-change: transform;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+      }
+
+      /* Loading skeleton animation */
+      .loading-skeleton {
+        background: linear-gradient(90deg, #f5f5f5 25%, #e0e0e0 50%, #f5f5f5 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+    </style>
+
+    <!-- Non-critical CSS loaded asynchronously -->
+    <link
+      rel="stylesheet"
+      href="{{ 'base.css' | asset_url }}"
+      media="print"
+      onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'base.css' | asset_url }}"></noscript>
+
+    <!-- SEO Meta Tags -->
+    <title>{{ page_title | escape }}{% if current_tags %}
+        - tagged "{{ current_tags | join: ', ' }}"{% endif %}
+      {% if current_page != 1 %}
+        - Page {{ current_page }}{% endif %}
+      {% unless page_title contains shop.name %}
+        - {{ shop.name }}{% endunless %}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:site_name" content="{{ shop.name }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:title" content="{{ page_title | escape }}">
+    {% if page_description %}
+      <meta property="og:description" content="{{ page_description | escape }}">
+    {% endif %}
+    {% if page_image %}
+      <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
+      <meta property="og:image:width" content="1200">
+      <meta property="og:image:height" content="630">
+    {% endif %}
+    <meta property="og:type" content="website">
+
+      <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page_title | escape }}">
+    {% if page_description %}
+      <meta name="twitter:description" content="{{ page_description | escape }}">
+    {% endif %}
+    {% if page_image %}
+      <meta name="twitter:image" content="{{ page_image | image_url: width: 1200 }}">
+  {% endif %}
+
+    <!-- Performance and Analytics -->
+    {{ content_for_header }}
+
+    <!-- Service Worker Registration -->
+    <script>
+      // Register service worker for advanced caching
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('{{ "service-worker.js" | asset_url }}')
+            .then(function(registration) {
+              console.log('🚀 Veyra Service Worker registered successfully:', registration.scope);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', function() {
+                const newWorker = registration.installing;
+                newWorker.addEventListener('statechange', function() {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // New service worker available
+                    console.log('🔄 New service worker available');
+                  }
+                });
+              });
+            })
+            .catch(function(error) {
+              console.error('❌ Service Worker registration failed:', error);
+            });
+        });
+      }
+    </script>
+  </head>
+
+  <body class="template-{{ template | split: '.' | first }}">
+
+
+    <!-- Header Section -->
+    {% section 'header' %}
+
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+      {{ content_for_layout }}
+  </main>
+
+    <!-- Footer Section -->
+    {% section 'footer' %}
+
+    <!-- Performance Monitoring Script -->
+    <script src="{{ 'performance.js' | asset_url }}" defer></script>
+
+    <!-- Advanced Performance Features -->
+    <script>
+      // Advanced performance optimizations
+      document.addEventListener('DOMContentLoaded', function() {
+        
+        // Intersection Observer for performance monitoring
+        if ('IntersectionObserver' in window) {
+          const performanceObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                // Track when elements become visible for performance metrics
+                const element = entry.target;
+                if (element.dataset.performanceTrack) {
+                  trackElementPerformance(element);
+                }
+              }
+            });
+          }, {
+            threshold: 0.1,
+            rootMargin: '50px'
+          });
+          
+          // Observe elements marked for performance tracking
+          document.querySelectorAll('[data-performance-track]').forEach(el => {
+            performanceObserver.observe(el);
+          });
+        }
+        
+        // Request Animation Frame for smooth animations
+        function smoothScrollTo(target) {
+          const targetElement = document.querySelector(target);
+          if (targetElement) {
+            const targetPosition = targetElement.offsetTop - 100;
+            const startPosition = window.pageYOffset;
+            const distance = targetPosition - startPosition;
+            const duration = 1000;
+            let start = null;
+            
+            function animation(currentTime) {
+              if (start === null) start = currentTime;
+              const timeElapsed = currentTime - start;
+              const run = ease(timeElapsed, startPosition, distance, duration);
+              window.scrollTo(0, run);
+              if (timeElapsed < duration) requestAnimationFrame(animation);
+            }
+            
+            function ease(t, b, c, d) {
+              t /= d / 2;
+              if (t < 1) return c / 2 * t * t + b;
+              t--;
+              return -c / 2 * (t * (t - 2) - 1) + b;
+            }
+            
+            requestAnimationFrame(animation);
+          }
+        }
+        
+        // Performance tracking function
+        function trackElementPerformance(element) {
+          const elementId = element.dataset.performanceTrack;
+          const loadTime = performance.now();
+          
+          console.log(`📊 Performance: Element ${elementId} loaded in ${loadTime.toFixed(2)}ms`);
+          
+          // Send to analytics if available
+          if (window.gtag) {
+            window.gtag('event', 'element_performance', {
+              'element_id': elementId,
+              'load_time': loadTime
+            });
+          }
+        }
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            smoothScrollTo(this.getAttribute('href'));
+          });
+        });
+        
+        // Lazy load non-critical images
+        if ('loading' in HTMLImageElement.prototype) {
+          const lazyImages = document.querySelectorAll('img[data-src]');
+          lazyImages.forEach(img => {
+            img.src = img.dataset.src;
+            img.classList.add('lazy-loaded');
+          });
+        }
+        
+        // Performance metrics display
+        if (window.performance && window.performance.getEntriesByType) {
+          const navigationEntries = performance.getEntriesByType('navigation');
+          if (navigationEntries.length > 0) {
+            const navEntry = navigationEntries[0];
+            console.log('📊 Page Load Performance:', {
+              'DOM Content Loaded': navEntry.domContentLoadedEventEnd - navEntry.domContentLoadedEventStart + 'ms',
+              'Load Complete': navEntry.loadEventEnd - navEntry.loadEventStart + 'ms',
+              'Total Load Time': navEntry.loadEventEnd - navEntry.fetchStart + 'ms'
+            });
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

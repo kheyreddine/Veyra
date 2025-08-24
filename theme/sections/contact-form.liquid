@@ -1,0 +1,236 @@
+{% comment %}
+  Contact Form Section
+  Displays a contact form with Shopify's built-in form handler
+  Includes contact information and optional Google Maps embed
+{% endcomment %}
+
+<section class="contact-form" 
+         data-section-id="{{ section.id }}" 
+         data-section-type="contact-form">
+  
+  <div class="contact-form__container">
+    <!-- Page Header -->
+    <div class="contact-form__header">
+      <h1 class="contact-form__title">Contact Us</h1>
+      {% if section.settings.subtitle != blank %}
+        <p class="contact-form__subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+    
+    <div class="contact-form__content">
+      <!-- Contact Form -->
+      <div class="contact-form__form-wrapper">
+        {% comment %} Use Shopify's built-in contact form handler {% endcomment %}
+        {% form 'contact' %}
+          <div class="contact-form__field-group">
+            <label for="ContactFormName" class="contact-form__label">
+              Name <span class="contact-form__required">*</span>
+            </label>
+            <input type="text" 
+                   id="ContactFormName" 
+                   name="contact[name]" 
+                   class="contact-form__input"
+                   required
+                   placeholder="Your full name">
+          </div>
+          
+          <div class="contact-form__field-group">
+            <label for="ContactFormEmail" class="contact-form__label">
+              Email <span class="contact-form__required">*</span>
+            </label>
+            <input type="email" 
+                   id="ContactFormEmail" 
+                   name="contact[email]" 
+                   class="contact-form__input"
+                   required
+                   placeholder="your.email@example.com">
+          </div>
+          
+          <div class="contact-form__field-group">
+            <label for="ContactFormSubject" class="contact-form__label">
+              Subject
+            </label>
+            <input type="text" 
+                   id="ContactFormSubject" 
+                   name="contact[subject]" 
+                   class="contact-form__input"
+                   placeholder="What's this about?">
+          </div>
+          
+          <div class="contact-form__field-group">
+            <label for="ContactFormMessage" class="contact-form__label">
+              Message <span class="contact-form__required">*</span>
+            </label>
+            <textarea id="ContactFormMessage" 
+                      name="contact[body]" 
+                      class="contact-form__textarea"
+                      rows="6"
+                      required
+                      placeholder="Tell us how we can help you..."></textarea>
+          </div>
+          
+          <button type="submit" class="contact-form__button">
+            Send Message
+          </button>
+        {% endform %}
+      </div>
+      
+      <!-- Contact Information -->
+      <div class="contact-form__info">
+        <h3 class="contact-form__info-title">Get in Touch</h3>
+        
+        {% if section.settings.address != blank %}
+          <div class="contact-form__info-item">
+            <div class="contact-form__info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div class="contact-form__info-content">
+              <h4 class="contact-form__info-label">Address</h4>
+              <p class="contact-form__info-text">{{ section.settings.address }}</p>
+            </div>
+          </div>
+        {% endif %}
+        
+        {% if section.settings.email != blank %}
+          <div class="contact-form__info-item">
+            <div class="contact-form__info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <div class="contact-form__info-content">
+              <h4 class="contact-form__info-label">Email</h4>
+              <a href="mailto:{{ section.settings.email }}" class="contact-form__info-link">
+                {{ section.settings.email }}
+              </a>
+            </div>
+          </div>
+        {% endif %}
+        
+        {% if section.settings.phone != blank %}
+          <div class="contact-form__info-item">
+            <div class="contact-form__info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </div>
+            <div class="contact-form__info-content">
+              <h4 class="contact-form__info-label">Phone</h4>
+              <a href="tel:{{ section.settings.phone }}" class="contact-form__info-link">
+                {{ section.settings.phone }}
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Google Maps Embed -->
+    {% if section.settings.show_map and section.settings.map_embed_url != blank %}
+      <div class="contact-form__map-wrapper">
+        <h3 class="contact-form__map-title">Find Us</h3>
+        <div class="contact-form__map">
+          <iframe src="{{ section.settings.map_embed_url }}"
+                  width="100%"
+                  height="400"
+                  style="border:0;"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  title="Store Location Map">
+          </iframe>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% comment %} Link the CSS file {% endcomment %}
+{{ 'contact-form.css' | asset_url | stylesheet_tag }}
+
+{% comment %} JavaScript for form animations and interactions {% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const formFields = document.querySelectorAll('.contact-form__input, .contact-form__textarea');
+    
+    // Add fade-in animation to form fields
+    formFields.forEach((field, index) => {
+      field.style.opacity = '0';
+      field.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        field.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        field.style.opacity = '1';
+        field.style.transform = 'translateY(0)';
+      }, 100 * index);
+    });
+    
+    // Form submission handling
+    const form = document.querySelector('form[action*="/contact"]');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        const submitButton = this.querySelector('.contact-form__button');
+        if (submitButton) {
+          submitButton.textContent = 'Sending...';
+          submitButton.disabled = true;
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Contact Form",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Page Subtitle",
+      "default": "We'd love to hear from you. Fill out the form below."
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Store Address",
+      "default": "123 Fashion Street, Style District, NY 10001"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Support Email",
+      "default": "hello@veyraclothing.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone Number",
+      "default": "+1 (555) 123-4567"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_map",
+      "label": "Show Google Maps",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "map_embed_url",
+      "label": "Google Maps Embed URL",
+      "info": "Paste the embed URL from Google Maps"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Form",
+      "category": "Contact"
+    }
+  ]
+}
+{% endschema %}

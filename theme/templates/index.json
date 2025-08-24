@@ -1,0 +1,94 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "background_image": "shopify://shop_images/Acer_Wallpaper_01_5000x2814_432b296c-893f-47e0-84f6-e6c797ee7748.jpg",
+        "headline": "Elevate Your Style",
+        "subheadline": "Discover our curated collection of modern fashion essentials designed for the contemporary lifestyle.",
+        "button_label": "Shop Now",
+        "button_link": "/collections/all"
+      }
+    },
+    "product-showcase": {
+      "type": "product-showcase",
+      "settings": {
+        "title": "Featured Products",
+        "subtitle": "Discover our latest collection",
+        "product_list": [
+          "black-leather-bag",
+          "blue-silk-tuxedo",
+          "chequered-red-shirt",
+          "classic-leather-jacket",
+          "classic-varsity-top",
+          "dark-denim-top",
+          "floral-white-top",
+          "led-high-tops"
+        ]
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_QJg8XP": {
+          "type": "testimonial",
+          "settings": {
+            "avatar": "shopify://shop_images/woman-in-the-city_925x_545ef911-e7d7-46fd-a666-af7307628c1a.jpg",
+            "name": "Sarah L.",
+            "review": "The quality is amazing! The clothes fit perfectly and the fabric feels premium. Shipping was fast too — will definitely shop again.",
+            "rating": 5
+          }
+        },
+        "testimonial_yj7xYD": {
+          "type": "testimonial",
+          "settings": {
+            "avatar": "shopify://shop_images/young-female-models-denim_925x_c282618d-8eba-49b2-9b5b-0da790bc693a.jpg",
+            "name": "James R.",
+            "review": "I love the modern designs. The site was easy to navigate, and checkout was super smooth. Highly recommend this store to anyone looking for stylish clothing.",
+            "rating": 4
+          }
+        },
+        "testimonial_Ukrxx9": {
+          "type": "testimonial",
+          "settings": {
+            "avatar": "shopify://shop_images/smiling-woman-poses_925x_7e71dcb0-11e0-4cdb-a32d-1d406c54376d.jpg",
+            "name": "Amina K.",
+            "review": "Great experience overall! Customer service answered my questions quickly, and the products look even better in person than online.",
+            "rating": 5
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_QJg8XP",
+        "testimonial_yj7xYD",
+        "testimonial_Ukrxx9"
+      ],
+      "settings": {
+        "title": "What Our Customers Say",
+        "subtitle": "Read what our valued customers have to say about their experience with Veyra Clothing."
+      }
+    },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {
+        "section_title": "Recently Viewed",
+        "show_recently_viewed": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "product-showcase",
+    "testimonials",
+    "recently-viewed"
+  ]
+}

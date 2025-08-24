@@ -1,0 +1,229 @@
+{% comment %} 
+    Testimonials Section 
+    - Section title with customer review cards 
+    - Each card shows avatar, name, review text, and star rating 
+    - Responsive layout: stacked on mobile, 3-column grid on desktop 
+    - Staggered fade-in animations for cards 
+    - Uses BEM naming convention for clean, maintainable CSS 
+{% endcomment %}
+
+<!-- Import testimonials-specific styles -->
+{{ 'testimonials.css' | asset_url | stylesheet_tag }}
+
+<section class="testimonials">
+  <div class="container">
+
+    <!-- Section Header -->
+    <div class="testimonials__header">
+      <h2 class="testimonials__title">
+        {% if section.settings.title != blank %}
+          {{ section.settings.title }}
+        {% else %}
+          What Our Customers Say
+        {% endif %}
+      </h2>
+
+      {% if section.settings.subtitle != blank %}
+        <p class="testimonials__subtitle">
+          {{ section.settings.subtitle }}
+        </p>
+      {% endif %}
+    </div>
+
+    <!-- Testimonials Grid -->
+    <div class="testimonials__grid">
+
+      <!-- Loop through testimonial blocks -->
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'testimonial' %}
+            <div class="testimonial__card" {{ block.shopify_attributes }}>
+
+              <!-- Customer Avatar -->
+              {% if block.settings.avatar != blank %}
+                <div class="testimonial__avatar">
+                  <img
+                    src="{{ block.settings.avatar | image_url: width: 80 }}"
+                    alt="{{ block.settings.name | escape }}"
+                    loading="lazy"
+                    width="80"
+                    height="80">
+                </div>
+              {% endif %}
+
+              <!-- Star Rating -->
+              {% if block.settings.rating > 0 %}
+                <div class="testimonial__rating">
+                  {% assign rating = block.settings.rating %}
+                  {% for i in (1..5) %}
+                    {% if i <= rating %}
+                      <span class="testimonial__star testimonial__star--filled">★</span>
+                    {% else %}
+                      <span class="testimonial__star">☆</span>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <!-- Review Text -->
+              {% if block.settings.review != blank %}
+                <blockquote class="testimonial__text">
+                  "{{ block.settings.review }}"
+                </blockquote>
+              {% endif %}
+
+              <!-- Customer Name -->
+              {% if block.settings.name != blank %}
+                <cite class="testimonial__name">
+                  {{ block.settings.name }}
+                </cite>
+              {% endif %}
+
+            </div>
+        {% endcase %}
+      {% endfor %}
+
+      <!-- Default testimonials if no blocks exist -->
+      {% if section.blocks.size == 0 %}
+        <div class="testimonial__card">
+          <div class="testimonial__avatar">
+            <img
+              src="{{ 'placeholder-avatar.png' | asset_url }}"
+              alt="Customer Avatar"
+              loading="lazy"
+              width="80"
+              height="80">
+          </div>
+          <div class="testimonial__rating">
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+          </div>
+          <blockquote class="testimonial__text">
+            "The quality of Veyra's clothing is exceptional. I love how each piece feels both stylish and comfortable. Highly recommend!"
+          </blockquote>
+          <cite class="testimonial__name">Sarah Johnson</cite>
+        </div>
+
+        <div class="testimonial__card">
+          <div class="testimonial__avatar">
+            <img
+              src="{{ 'placeholder-avatar.png' | asset_url }}"
+              alt="Customer Avatar"
+              loading="lazy"
+              width="80"
+              height="80">
+          </div>
+          <div class="testimonial__rating">
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+          </div>
+          <blockquote class="testimonial__text">
+            "Perfect fit and amazing customer service. The collection is exactly what I was looking for - modern, minimal, and versatile."
+          </blockquote>
+          <cite class="testimonial__name">Michael Chen</cite>
+        </div>
+
+        <div class="testimonial__card">
+          <div class="testimonial__avatar">
+            <img
+              src="{{ 'placeholder-avatar.png' | asset_url }}"
+              alt="Customer Avatar"
+              loading="lazy"
+              width="80"
+              height="80">
+          </div>
+          <div class="testimonial__rating">
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+            <span class="testimonial__star testimonial__star--filled">★</span>
+          </div>
+          <blockquote class="testimonial__text">
+            "I've been shopping with Veyra for months now and every piece exceeds expectations. The attention to detail is remarkable."
+          </blockquote>
+          <cite class="testimonial__name">Emma Rodriguez</cite>
+        </div>
+      {% endif %}
+
+    </div>
+
+  </div>
+</section>
+
+{% comment %} 
+    Section Schema for Theme Editor Customization 
+{% endcomment %}
+{% schema %}
+  {
+    "name": "Testimonials",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Section Title",
+        "default": "What Our Customers Say"
+      }, {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Section Subtitle",
+        "default": "Read what our valued customers have to say about their experience with Veyra Clothing."
+      }
+    ],
+    "blocks": [
+      {
+        "type": "testimonial",
+        "name": "Testimonial",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "avatar",
+            "label": "Customer Avatar",
+            "info": "Recommended size: 80x80px"
+          }, {
+            "type": "text",
+            "id": "name",
+            "label": "Customer Name",
+            "default": "Customer Name"
+          }, {
+            "type": "textarea",
+            "id": "review",
+            "label": "Customer Review",
+            "default": "Share your experience with our products and service."
+          }, {
+            "type": "range",
+            "id": "rating",
+            "label": "Star Rating",
+            "min": 1,
+            "max": 5,
+            "step": 1,
+            "default": 5
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonials",
+        "category": "Content",
+        "blocks": [
+          {
+            "type": "testimonial"
+          }, {
+            "type": "testimonial"
+          }, {
+            "type": "testimonial"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

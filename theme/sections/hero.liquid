@@ -1,0 +1,93 @@
+{% comment %} 
+    Hero Section 
+    - Full-width background image with overlay 
+    - Headline and subheadline with fade-in animations 
+    - Call-to-action button with hover effects 
+    - Responsive layout: stacked on mobile, side-by-side on desktop 
+    - Uses BEM naming convention for clean, maintainable CSS 
+{% endcomment %}
+
+<!-- Import hero-specific styles -->
+{{ 'hero.css' | asset_url | stylesheet_tag }}
+
+<section class="hero" style="{% if section.settings.background_image %}background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');{% endif %}">
+
+  <div class="hero__overlay"></div>
+
+  <div class="container">
+    <div class="hero__content">
+
+      <!-- Headline -->
+      {% if section.settings.headline != blank %}
+        <h1 class="hero__title">
+          {{ section.settings.headline }}
+        </h1>
+      {% endif %}
+
+      <!-- Subheadline -->
+      {% if section.settings.subheadline != blank %}
+        <p class="hero__subtitle">
+          {{ section.settings.subheadline }}
+        </p>
+      {% endif %}
+
+      <!-- Call-to-Action Button -->
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        <div class="hero__button-wrapper">
+          <a href="{{ section.settings.button_link }}" class="hero__button">
+            {{ section.settings.button_label }}
+          </a>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+
+{% comment %} 
+    Section Schema for Theme Editor Customization 
+{% endcomment %}
+{% schema %}
+  {
+    "name": "Hero",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background Image",
+        "info": "Recommended size: 1920x800px"
+      },
+      {
+        "type": "text",
+        "id": "headline",
+        "label": "Headline",
+        "default": "Elevate Your Style"
+      },
+      {
+        "type": "textarea",
+        "id": "subheadline",
+        "label": "Subheadline",
+        "default": "Discover our curated collection of modern fashion essentials designed for the contemporary lifestyle."
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button Label",
+        "default": "Shop Now"
+      }, {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link",
+        "default": "/collections/all"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Hero",
+        "category": "Hero"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,278 @@
+{% comment %} 
+    Search Results Section 
+    - Displays search results in a responsive grid 
+    - Handles both results and no results scenarios 
+    - Uses BEM naming convention for maintainability 
+{% endcomment %}
+
+<section
+  class="search-results"
+  data-section-id="{{ section.id }}"
+  data-section-type="search-results">
+  <div class="search-results__container">
+
+    <!-- Page Header -->
+    <div class="search-results__header">
+      <h1 class="search-results__title">Search Results</h1>
+      <p class="search-results__subtitle">
+        Results for '{{ search.terms }}'
+      </p>
+    </div>
+
+    <!-- Search Results Content -->
+    {% if search.results_count > 0 %}
+      <!-- Results Found -->
+      <div class="search-results__content">
+        <div class="search-results__info">
+          <p class="search-results__count">
+            {{ search.results_count }} product{{ search.results_count | pluralize }} found
+          </p>
+        </div>
+
+        <!-- Product Grid -->
+        <div
+          class="search-results__grid"
+          data-products-per-row-desktop="{{ section.settings.products_per_row_desktop }}"
+          data-products-per-row-tablet="{{ section.settings.products_per_row_tablet }}"
+          data-products-per-row-mobile="{{ section.settings.products_per_row_mobile }}">
+
+          {% for product in search.results %}
+            {% if product.object_type == 'product' %}
+              <article class="search-results__card" data-product-id="{{ product.id }}">
+                <a href="{{ product.url }}" class="search-results__card-link">
+
+                  <!-- Product Image -->
+                  <div class="search-results__image-wrapper">
+                    {% if product.featured_image %}
+                      <img
+                        src="{{ product.featured_image | img_url: '400x500', crop: 'center' }}"
+                        alt="{{ product.featured_image.alt | escape }}"
+                        class="search-results__image"
+                        loading="lazy"
+                        width="400"
+                        height="500">
+                    {% else %}
+                      <div class="search-results__placeholder">
+                        <svg
+                          class="search-results__placeholder-icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1">
+                          <rect
+                            x="3"
+                            y="3"
+                            width="18"
+                            height="18"
+                            rx="2"
+                            ry="2"></rect>
+                          <circle
+                            cx="8.5"
+                            cy="8.5"
+                            r="1.5"></circle>
+                          <polyline points="21,15 16,10 5,21"></polyline>
+                        </svg>
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <!-- Product Info -->
+                  <div class="search-results__card-info">
+                    <h3 class="search-results__product-title">
+                      {{ product.title }}
+                    </h3>
+
+                    <div class="search-results__price">
+                      {% if product.compare_at_price > product.price %}
+                        <span class="search-results__price--sale">
+                          {{ product.price | money }}
+                        </span>
+                        <span class="search-results__price--compare">
+                          {{ product.compare_at_price | money }}
+                        </span>
+                      {% else %}
+                        <span class="search-results__price--regular">
+                          {{ product.price | money }}
+                        </span>
+                      {% endif %}
+                    </div>
+
+                    {% if product.vendor %}
+                      <p class="search-results__vendor">
+                        {{ product.vendor }}
+                      </p>
+                    {% endif %}
+                  </div>
+
+                </a>
+              </article>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <!-- Pagination (if needed) -->
+        {% if paginate.pages > 1 %}
+          <div class="search-results__pagination">
+            {{ paginate | default_pagination }}
+          </div>
+        {% endif %}
+
+      </div>
+
+    {% else %}
+      <!-- No Results Found -->
+      <div class="search-results__no-results">
+        <div class="search-results__no-results-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1">
+            <circle
+              cx="11"
+              cy="11"
+              r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+            <line
+              x1="11"
+              y1="8"
+              x2="11"
+              y2="14"></line>
+            <line
+              x1="8"
+              y1="11"
+              x2="14"
+              y2="11"></line>
+          </svg>
+        </div>
+
+        <h2 class="search-results__no-results-title">
+          No products found
+        </h2>
+
+        <p class="search-results__no-results-message">
+          {{ section.settings.no_results_message }}
+        </p>
+
+        <div class="search-results__no-results-actions">
+          <a href="{{ routes.collections_url }}" class="search-results__back-button">
+            {{ section.settings.back_to_shop_text }}
+          </a>
+        </div>
+      </div>
+    {% endif %}
+
+  </div></section>
+
+{% comment %} Link the CSS file {% endcomment %}
+{{ 'search-results.css' | asset_url | stylesheet_tag }}
+
+{% comment %} 
+    JavaScript for staggered animations and responsive grid 
+{% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchResults = document.querySelector('.search-results');
+    if (!searchResults) return;
+  
+    // Staggered fade-in animation for product cards
+    const productCards = searchResults.querySelectorAll('.search-results__card');
+    productCards.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 100 * index);
+    });
+  
+    // Responsive grid adjustments based on section settings
+    const grid = searchResults.querySelector('.search-results__grid');
+    if (grid) {
+      const updateGridLayout = () => {
+        const width = window.innerWidth;
+        let productsPerRow;
+        
+        if (width >= 1024) {
+          productsPerRow = grid.dataset.productsPerRowDesktop || 4;
+        } else if (width >= 768) {
+          productsPerRow = grid.dataset.productsPerRowTablet || 3;
+        } else {
+          productsPerRow = grid.dataset.productsPerRowMobile || 2;
+        }
+        
+        grid.style.gridTemplateColumns = `repeat(${productsPerRow}, 1fr)`;
+      };
+  
+      // Initial setup
+      updateGridLayout();
+      
+      // Update on resize
+      window.addEventListener('resize', updateGridLayout);
+    }
+  });
+</script>
+
+{% comment %} 
+    Section Schema for Theme Editor 
+{% endcomment %}
+{% schema %}
+  {
+    "name": "Search Results",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "range",
+        "id": "products_per_row_desktop",
+        "label": "Products per row (Desktop)",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "default": 4,
+        "info": "Number of products displayed per row on desktop devices"
+      },
+      {
+        "type": "range",
+        "id": "products_per_row_tablet",
+        "label": "Products per row (Tablet)",
+        "min": 2,
+        "max": 4,
+        "step": 1,
+        "default": 3,
+        "info": "Number of products displayed per row on tablet devices"
+      },
+      {
+        "type": "range",
+        "id": "products_per_row_mobile",
+        "label": "Products per row (Mobile)",
+        "min": 1,
+        "max": 3,
+        "step": 1,
+        "default": 2,
+        "info": "Number of products displayed per row on mobile devices"
+      },
+      {
+        "type": "textarea",
+        "id": "no_results_message",
+        "label": "No Results Message",
+        "default": "No products found for your search. Try different keywords or browse our collections.",
+        "info": "Message displayed when no search results are found"
+      }, {
+        "type": "text",
+        "id": "back_to_shop_text",
+        "label": "Back to Shop Button Text",
+        "default": "Back to Shop",
+        "info": "Text for the button that takes users back to collections"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Search Results",
+        "category": "Search"
+      }
+    ]
+  }
+{% endschema %}

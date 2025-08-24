@@ -1,0 +1,209 @@
+{% comment %} 
+  Responsive Image Snippet 
+  - Advanced image optimization with WebP support 
+  - Responsive srcset and sizes attributes 
+  - Lazy loading with Intersection Observer fallback 
+  - Performance tracking and error handling
+   
+  Business Problem Solved: Large, unoptimized images slow down page loading
+  and hurt user experience, especially on mobile devices. This implementation
+  provides optimal image delivery for all devices and connection speeds.
+   
+  Usage: {% render 'responsive-image', image: product.featured_image, alt: product.title, class: 'product-image' %} 
+{% endcomment %}
+
+{% assign image = image | default: nil %}
+{% assign alt = alt | default: 'Product image' %}
+{% assign class = class | default: 'responsive-image' %}
+{% assign sizes = sizes | default: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw' %}
+{% assign loading = loading | default: 'lazy' %}
+{% assign performance_track = performance_track | default: false %}
+
+  {% if image %}
+  {% comment %} Generate responsive image URLs with WebP support {% endcomment %}
+  {% assign image_300 = image | image_url: width: 300, format: 'webp' %}
+  {% assign image_600 = image | image_url: width: 600, format: 'webp' %}
+  {% assign image_900 = image | image_url: width: 900, format: 'webp' %}
+{% assign image_1200 = image | image_url: width: 1200, format: 'webp' %}
+
+  {% comment %} Fallback JPEG versions for older browsers {% endcomment %}
+  {% assign fallback_300 = image | image_url: width: 300, format: 'jpg' %}
+  {% assign fallback_600 = image | image_url: width: 600, format: 'jpg' %}
+  {% assign fallback_900 = image | image_url: width: 900, format: 'jpg' %}
+{% assign fallback_1200 = image | image_url: width: 1200, format: 'jpg' %}
+
+  {% comment %} Generate srcset for optimal delivery {% endcomment %}
+  {% assign webp_srcset = image_300 | append: ' 300w, ' | append: image_600 | append: ' 600w, ' | append: image_900 | append: ' 900w, ' | append: image_1200 | append: ' 1200w' %}
+{% assign jpeg_srcset = fallback_300 | append: ' 300w, ' | append: fallback_600 | append: ' 600w, ' | append: fallback_900 | append: ' 900w, ' | append: fallback_1200 | append: ' 1200w' %}
+
+  {% comment %} Set default image for immediate display {% endcomment %}
+  {% assign default_image = image_600 %}
+
+    <picture
+    class="{{ class }}-wrapper"
+    {% if performance_track %}
+    data-performance-track="image-{{ image.id }}"
+    {% endif %}>
+    {% comment %} WebP format for modern browsers {% endcomment %}
+    <source
+      type="image/webp"
+      srcset="{{ webp_srcset }}"
+      sizes="{{ sizes }}"
+      media="(min-width: 1px)">
+
+      {% comment %} JPEG fallback for older browsers {% endcomment %}
+    <source
+      type="image/jpeg"
+      srcset="{{ jpeg_srcset }}"
+      sizes="{{ sizes }}"
+      media="(min-width: 1px)">
+
+      {% comment %} Default image with fallback {% endcomment %}
+    <img
+      src="{{ default_image }}"
+      alt="{{ alt | escape }}"
+      class="{{ class }}"
+      loading="{{ loading }}"
+      {% if loading == 'lazy' %}
+      data-src="{{ default_image }}"
+      {% endif %}
+      sizes="{{ sizes }}"
+      width="{{ image.width | default: 600 }}"
+      height="{{ image.height | default: 600 }}"
+      {% if performance_track %}
+      data-performance-track="image-{{ image.id }}"
+      {% endif %}
+      onload="this.classList.add('loaded'); this.classList.remove('loading-skeleton');"
+      onerror="this.classList.add('error'); this.classList.remove('loading-skeleton'); this.src='{{ fallback_300 }}';">
+  </picture>
+
+  {% comment %} Loading skeleton for better perceived performance {% endcomment %}
+  {% if loading == 'lazy' %}
+    <div class="{{ class }}-skeleton loading-skeleton" aria-hidden="true"></div>
+  {% endif %}
+
+{% else %}
+  {% comment %} Placeholder for missing images {% endcomment %}
+  <div class="{{ class }}-placeholder" aria-label="{{ alt | escape }}">
+    <svg
+      class="{{ class }}-placeholder-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2">
+      <rect
+        x="3"
+        y="3"
+        width="18"
+        height="18"
+        rx="2"
+        ry="2"></rect>
+      <circle
+        cx="8.5"
+        cy="8.5"
+        r="1.5"></circle>
+      <polyline points="21,15 16,10 5,21"></polyline>
+    </svg>
+    <span class="{{ class }}-placeholder-text">No image available</span>
+  </div>
+{% endif %}
+
+{% comment %} 
+  CSS for responsive image optimization
+  This should be included in your CSS files 
+{% endcomment %}
+<style>
+  .responsive-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-gray-light);
+    border-radius: var(--border-radius-sm);
+  }
+
+  .responsive-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: opacity 0.3s ease-in-out
+    , transform 0.3s ease-in-out;
+    opacity: 0;
+  }
+
+  .responsive-image.loaded {
+    opacity: 1;
+  }
+
+  .responsive-image.error {
+    opacity: 0.5;
+  }
+
+  .responsive-image-skeleton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-gray-light) 25%, var(--color-gray-medium) 50%, var(--color-gray-light) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .responsive-image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: var(--color-gray-medium);
+    text-align: center;
+    min-height: 200px;
+  }
+
+  .responsive-image-placeholder-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+    color: var(--color-gray-medium);
+  }
+
+  .responsive-image-placeholder-text {
+    font-size: 14px;
+    color: var(--color-gray-medium);
+  }
+
+  /* Hardware acceleration for smooth animations */
+  .responsive-image {
+    will-change: transform
+    , opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Hover effects for product images */
+  .responsive-image:hover {
+    transform: scale(1.05);
+  }
+
+  /* Loading animation */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* Responsive sizing */
+  @media (max-width: 640px) {
+    .responsive-image-wrapper {
+      border-radius: var(--border-radius-sm);
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .responsive-image-wrapper {
+      border-radius: var(--border-radius-md);
+    }
+  }
+</style>

@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "search-results": {
+      "type": "search-results",
+      "settings": {
+        "products_per_row_desktop": 4,
+        "products_per_row_tablet": 3,
+        "products_per_row_mobile": 2,
+        "no_results_message": "No products found for your search. Try different keywords or browse our collections.",
+        "back_to_shop_text": "Back to Shop"
+      }
+    }
+  },
+  "order": [
+    "search-results"
+  ]
+}

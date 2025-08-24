@@ -1,0 +1,227 @@
+/* ==========================================================================
+   Testimonials Section Styles for Veyra Clothing Theme
+   - Customer review cards with staggered animations
+   - Responsive grid layout: stacked on mobile, 3-column on desktop
+   - Hover effects with subtle lift and shadow
+   - BEM naming convention for maintainability
+   ========================================================================== */
+
+/* Testimonials Container */
+.testimonials {
+  padding: var(--spacing-3xl) 0;
+  background-color: var(--color-secondary);
+}
+
+/* Section Header */
+.testimonials__header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.testimonials__title {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin: 0 0 var(--spacing-md) 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.testimonials__subtitle {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-gray-medium);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Testimonials Grid */
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Individual Testimonial Card */
+.testimonial__card {
+  background-color: #ffffff;
+  padding: 32px 24px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Staggered animation delays for cards */
+.testimonial__card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.testimonial__card:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.testimonial__card:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+/* Hover Effects */
+.testimonial__card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Customer Avatar */
+.testimonial__avatar {
+  margin-bottom: 20px;
+}
+
+.testimonial__avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f0f0f0;
+}
+
+/* Star Rating */
+.testimonial__rating {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.testimonial__star {
+  font-size: 20px;
+  color: #dddddd;
+  line-height: 1;
+}
+
+.testimonial__star--filled {
+  color: #ffd700;
+}
+
+/* Review Text */
+.testimonial__text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+  margin: 0 0 20px 0;
+  font-style: italic;
+  quotes: """ """;
+}
+
+.testimonial__text::before {
+  content: open-quote;
+  font-size: 24px;
+  color: #cccccc;
+  margin-right: 4px;
+}
+
+.testimonial__text::after {
+  content: close-quote;
+  font-size: 24px;
+  color: #cccccc;
+  margin-left: 4px;
+}
+
+/* Customer Name */
+.testimonial__name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #666666;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Fade-in Animation Keyframes */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+/* Tablet Styles (768px and above) */
+@media (min-width: 768px) {
+  .testimonials {
+    padding: 100px 0;
+  }
+  
+  .testimonials__title {
+    font-size: 36px;
+  }
+  
+  .testimonials__subtitle {
+    font-size: 20px;
+  }
+  
+  .testimonials__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+  
+  .testimonial__card {
+    padding: 40px 32px;
+  }
+}
+
+/* Desktop Styles (1024px and above) */
+@media (min-width: 1024px) {
+  .testimonials {
+    padding: 120px 0;
+  }
+  
+  .testimonials__title {
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .testimonials__subtitle {
+    font-size: 22px;
+  }
+  
+  .testimonials__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    max-width: 1200px;
+  }
+  
+  .testimonial__card {
+    padding: 48px 32px;
+  }
+  
+  .testimonial__text {
+    font-size: 18px;
+  }
+  
+  .testimonial__name {
+    font-size: 18px;
+  }
+}
+
+/* Large Desktop Styles (1200px and above) */
+@media (min-width: 1200px) {
+  .testimonials__title {
+    font-size: 48px;
+  }
+  
+  .testimonials__subtitle {
+    font-size: 24px;
+  }
+}

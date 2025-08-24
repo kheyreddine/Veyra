@@ -1,0 +1,366 @@
+{% comment %} 
+                    Main Product Section 
+                    - Displays product details with image gallery, variants, and add-to-cart
+                    - Implements Schema.org structured data for SEO
+                    - Responsive design with mobile-first approach
+                    - Uses Shopify product object and forms for functionality
+{% endcomment %}
+
+<!-- Schema.org Structured Data for SEO -->
+{% render 'schema-org'
+  , type: 'product'
+  , data: product %}
+
+<section class="main-product">
+  <div class="container">
+    <div class="main-product__layout">
+
+      <!-- Product Images (Left Column) -->
+      <div class="main-product__images">
+        <!-- Main Product Image -->
+        <div class="main-product__main-image-wrapper">
+          {% if product.featured_image %}
+            <img
+              src="{{ product.featured_image | image_url: width: 600 }}"
+              alt="{{ product.featured_image.alt | escape }}"
+              class="main-product__main-image"
+              id="main-product-image"
+              loading="eager">
+          {% else %}
+            <div class="main-product__image-placeholder">
+              <span>No image available</span>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Product Image Thumbnails -->
+        {% if product.images.size > 1 %}
+          <div class="main-product__thumbnails">
+            {% for image in product.images %}
+              <button
+                class="main-product__thumbnail{% if forloop.first %} main-product__thumbnail--active{% endif %}"
+                data-image="{{ image | image_url: width: 600 }}"
+                data-alt="{{ image.alt | escape }}"
+                aria-label="View {{ image.alt | escape }}">
+                <img
+                  src="{{ image | image_url: width: 100 }}"
+                  alt="{{ image.alt | escape }}"
+                  loading="lazy">
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Product Details (Right Column) -->
+      <div class="main-product__details">
+        <!-- Product Title and Vendor -->
+        <div class="main-product__header">
+          <h1 class="main-product__title">{{ product.title }}</h1>
+          {% if product.vendor %}
+            <p class="main-product__vendor">by {{ product.vendor }}</p>
+          {% endif %}
+        </div>
+
+        <!-- Product Price -->
+        <div class="main-product__price">
+          {% if product.compare_at_price > product.price %}
+            <span class="main-product__price-compare" id="product-compare-price">{{ product.compare_at_price | money }}</span>
+          {% endif %}
+          <span class="main-product__price-current" id="product-price">{{ product.selected_or_first_available_variant.price | money }}</span>
+        </div>
+
+        <!-- Product Description -->
+        {% if product.description != blank %}
+          <div class="main-product__description">
+            {{ product.description }}
+          </div>
+        {% endif %}
+
+        <!-- Product Form -->
+        <form
+          action="/cart/add"
+          method="post"
+          class="main-product__form"
+          enctype="multipart/form-data">
+
+          <!-- Product Variants -->
+          {% if product.has_only_default_variant == false %}
+            <div class="main-product__variants">
+              {% for option in product.options_with_values %}
+                <div class="main-product__variant-group">
+                  <label class="main-product__variant-label">
+                    {{ option.name }}
+                  </label>
+
+                  {% if option.name == 'Color' or option.name == 'Colour' %}
+                    <!-- Color Swatches -->
+                    <div class="main-product__color-swatches">
+                      {% for value in option.values %}
+                        {% assign variant = product.variants | where: "option1", value | first %}
+                        {% if variant == blank and option.name == 'Color' %}
+                          {% assign variant = product.variants | where: "option2", value | first %}
+                        {% endif %}
+                        {% if variant == blank and option.name == 'Color' %}
+                          {% assign variant = product.variants | where: "option3", value | first %}
+                        {% endif %}
+
+                        <button
+                          type="button"
+                          class="main-product__color-swatch{% if forloop.first %} main-product__color-swatch--active{% endif %}"
+                          data-option="{{ option.name | handleize }}"
+                          data-value="{{ value | escape }}"
+                          data-variant-id="{{ variant.id }}"
+                          data-variant-price="{{ variant.price | money }}"
+                          data-variant-compare-price="{{ variant.compare_at_price | money }}"
+                          data-variant-available="{{ variant.available }}"
+                          data-variant-image="{{ variant.image | image_url: width: 600 }}"
+                          style="background-color: {% render 'color-swatch', color_name: value %}"
+                          aria-label="Select {{ value | escape }}">
+                          <span class="main-product__color-swatch-name">{{ value }}</span>
+                        </button>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <!-- Regular Dropdown for non-color options -->
+                    <select
+                      class="main-product__variant-select"
+                      data-option="{{ option.name | handleize }}"
+                      required>
+                      {% for value in option.values %}
+                        <option value="{{ value | escape }}">{{ value }}</option>
+                      {% endfor %}
+                    </select>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+
+            <!-- Hidden variant ID input -->
+            <input
+              type="hidden"
+              name="id"
+              id="variant-id"
+              value="{{ product.selected_or_first_available_variant.id }}">
+          {% else %}
+            <!-- Single variant product -->
+            <input
+              type="hidden"
+              name="id"
+              value="{{ product.selected_or_first_available_variant.id }}">
+          {% endif %}
+
+          <!-- Quantity Selector -->
+          <div class="main-product__quantity">
+            <label for="quantity" class="main-product__quantity-label">Quantity</label>
+            <div class="main-product__quantity-controls">
+              <button
+                type="button"
+                class="main-product__quantity-btn"
+                data-action="decrease">-</button>
+              <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                value="1"
+                min="1"
+                class="main-product__quantity-input">
+              <button
+                type="button"
+                class="main-product__quantity-btn"
+                data-action="increase">+</button>
+            </div>
+          </div>
+
+          <!-- Add to Cart Button -->
+          <button
+            type="submit"
+            class="main-product__add-to-cart"
+            id="add-to-cart-btn"
+            {% unless product.available %}
+            disabled{% endunless %}>
+            {% if product.available %}
+              Add to Cart
+            {% else %}
+              Sold Out
+            {% endif %}
+          </button>
+
+        </form>
+
+        <!-- Product Meta Information -->
+        <div class="main-product__meta">
+          {% if product.vendor %}
+            <p class="main-product__vendor">
+              <strong>Brand:</strong>
+              {{ product.vendor }}
+            </p>
+          {% endif %}
+
+          {% if product.type %}
+            <p class="main-product__type">
+              <strong>Category:</strong>
+              {{ product.type }}
+            </p>
+          {% endif %}
+
+          {% if product.tags.size > 0 %}
+            <div class="main-product__tags">
+              <strong>Tags:</strong>
+              {% for tag in product.tags %}
+                <span class="main-product__tag">{{ tag }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% comment %} 
+                    Section Schema for Theme Editor 
+{% endcomment %}
+{% schema %}
+  {
+    "name": "Main Product",
+    "tag": "section",
+    "class": "section",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Main Product",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}
+
+{% comment %} 
+                    JavaScript for Product Page Functionality 
+{% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  // Thumbnail image switching
+  const thumbnails = document.querySelectorAll('.main-product__thumbnail');
+  const mainImage = document.querySelector('.main-product__main-image');
+  
+  thumbnails.forEach(thumb => {
+    thumb.addEventListener('click', function() {
+      const newSrc = this.dataset.image;
+      const newAlt = this.dataset.alt;
+      
+      if (mainImage) {
+        mainImage.src = newSrc;
+        mainImage.alt = newAlt;
+      }
+      
+      // Update active thumbnail
+      thumbnails.forEach(t => t.classList.remove('main-product__thumbnail--active'));
+      this.classList.add('main-product__thumbnail--active');
+    });
+  });
+  
+  // Quantity controls
+  const quantityInput = document.querySelector('.main-product__quantity-input');
+  const decreaseBtn = document.querySelector('[data-action="decrease"]');
+  const increaseBtn = document.querySelector('[data-action="increase"]');
+  
+  if (decreaseBtn && increaseBtn && quantityInput) {
+    decreaseBtn.addEventListener('click', function() {
+      const currentValue = parseInt(quantityInput.value);
+      if (currentValue > 1) {
+        quantityInput.value = currentValue - 1;
+      }
+    });
+    
+    increaseBtn.addEventListener('click', function() {
+      const currentValue = parseInt(quantityInput.value);
+      quantityInput.value = currentValue + 1;
+    });
+  }
+  
+  // Color swatch functionality
+  const colorSwatches = document.querySelectorAll('.main-product__color-swatch');
+  const variantIdInput = document.querySelector('#variant-id');
+  const productPrice = document.querySelector('#product-price');
+  const productComparePrice = document.querySelector('#product-compare-price');
+  const addToCartBtn = document.querySelector('#add-to-cart-btn');
+  
+  console.log('🚀 Color swatches found:', colorSwatches.length);
+  console.log('🔧 Variant ID input:', variantIdInput);
+  console.log('💰 Product price element:', productPrice);
+  
+  // Only proceed if we have color swatches
+  if (colorSwatches.length > 0) {
+    colorSwatches.forEach(swatch => {
+    swatch.addEventListener('click', function() {
+      console.log('🎨 Color swatch clicked:', this.dataset.value);
+      
+      // Update active state
+      colorSwatches.forEach(s => s.classList.remove('main-product__color-swatch--active'));
+      this.classList.add('main-product__color-swatch--active');
+      
+      // Update variant ID
+      if (variantIdInput) {
+        variantIdInput.value = this.dataset.variantId;
+        console.log('🆔 Updated variant ID:', this.dataset.variantId);
+      }
+      
+      // Update price
+      if (productPrice) {
+        productPrice.textContent = this.dataset.variantPrice;
+        console.log('💰 Updated price:', this.dataset.variantPrice);
+      }
+      
+      // Update compare price
+      if (productComparePrice) {
+        if (this.dataset.variantComparePrice && this.dataset.variantComparePrice !== '0') {
+          productComparePrice.textContent = this.dataset.variantComparePrice;
+          productComparePrice.style.display = 'inline';
+        } else {
+          productComparePrice.style.display = 'none';
+        }
+      }
+      
+      // Update image if variant has specific image
+      if (this.dataset.variantImage && mainImage) {
+        mainImage.src = this.dataset.variantImage;
+        console.log('🖼️ Updated image:', this.dataset.variantImage);
+      }
+      
+      // Update add to cart button availability
+      if (addToCartBtn) {
+        if (this.dataset.variantAvailable === 'true') {
+          addToCartBtn.disabled = false;
+          addToCartBtn.textContent = 'Add to Cart';
+        } else {
+          addToCartBtn.disabled = true;
+          addToCartBtn.textContent = 'Sold Out';
+        }
+      }
+    });
+  });
+  } else {
+    console.log('⚠️ No color swatches found - using basic variant system');
+  }
+  
+  // Regular variant select functionality
+  const variantSelects = document.querySelectorAll('.main-product__variant-select');
+  
+  if (variantSelects.length > 0) {
+    variantSelects.forEach(select => {
+    select.addEventListener('change', function() {
+      // Find the currently selected color swatch
+      const activeColorSwatch = document.querySelector('.main-product__color-swatch--active');
+      
+      if (activeColorSwatch) {
+        // Trigger the color swatch click to update everything
+        activeColorSwatch.click();
+      }
+    });
+  });
+  }
+  });
+</script>
