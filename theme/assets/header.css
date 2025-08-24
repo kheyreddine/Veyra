@@ -99,9 +99,9 @@
 /* Full-width Search Bar Below Header */
 .header__search-full {
   width: 100%;
-  padding: 20px 0;
+  /* padding: 20px 0;
   border-top: 1px solid var(--color-gray-light);
-  background-color: var(--color-white);
+  background-color: var(--color-white); */
 }
 
 .header__search-form {

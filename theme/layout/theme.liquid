@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="">
+    <meta name="theme-color" content="#111111">
     <link rel="canonical" href="{{ canonical_url }}">
 
       <!-- Preload critical resources for performance -->
@@ -18,290 +18,300 @@
       as="style">
     <link
       rel="preload"
+      href="{{ 'hero.css' | asset_url }}"
+      as="style">
+    <link
+      rel="preload"
       href="{{ 'performance.js' | asset_url }}"
       as="script">
-    <link
-      rel="preload"
-      href="{{ 'service-worker.js' | asset_url }}"
-      as="script">
 
-      <!-- Preload critical fonts for performance -->
-    <link
-      rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      as="style">
+      <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://cdn.shopify.com">
 
-    <!-- Critical CSS Inlining for above-the-fold content -->
+      <!-- Critical CSS inlined to prevent layout shifts -->
     <style>
-      /* Critical CSS for instant rendering */
-      body {
-        font-family: system-ui
-        , -apple-system
-        , BlinkMacSystemFont
-        , "Segoe UI"
-        , Roboto
-        , sans-serif;
-        margin: 0;
-        padding: 0;
-      }
-      .header {
-        position: sticky;
-        top: 0;
-        background: #fff;
-        z-index: 1000;
-      }
+    /* Critical CSS for above-the-fold content */
+    :root {
+      --color-primary: #111111;
+      --color-secondary: #f5f5f5;
+      --color-accent: #e63946;
+      --color-white: #ffffff;
+      --font-heading: 'Poppins'
+      , system-ui
+      , -apple-system
+      , BlinkMacSystemFont
+      , "Segoe UI"
+      , Roboto
+      , sans-serif;
+      --font-body: 'Inter'
+      , system-ui
+      , -apple-system
+      , BlinkMacSystemFont
+      , "Segoe UI"
+      , Roboto
+      , sans-serif;
+    }
+
+    /* Prevent layout shifts during font loading */
+    .hero {
+      min-height: 500px;
+      height: 60vh;
+      max-height: 800px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      contain: layout style paint;
+    }
+
+    .hero__title {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--color-white);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 0 0 20px;
+      line-height: 1.2;
+      min-height: 58px;
+      contain: layout style;
+    }
+
+    .hero__subtitle {
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--color-white);
+      margin: 0 0 32px;
+      line-height: 1.6;
+      max-width: 600px;
+      min-height: 30px;
+      contain: layout style;
+    }
+
+    .hero__button {
+      display: inline-block;
+      padding: 16px 32px;
+      background-color: var(--color-accent);
+      color: var(--color-white);
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 1px;
+      border-radius: 9999px;
+      transition: all 0.3s ease;
+      min-height: 56px;
+      line-height: 1.5;
+      contain: layout style;
+    }
+
+    /* Mobile responsive critical CSS */
+    @media (max-width: 640px) {
       .hero {
-        background: #f5f5f5;
-        min-height: 60vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        min-height: 400px;
+        height: 50vh;
       }
+
       .hero__title {
-        font-size: 48px;
-        font-weight: 700;
-        text-align: center;
-        margin: 0;
+        font-size: 32px;
+        min-height: 40px;
       }
+
       .hero__subtitle {
-        font-size: 20px;
-        text-align: center;
-        margin: 16px 0;
-      }
-      .hero__button {
-        padding: 16px 32px;
-        background: #e63946;
-        color: #fff;
-        border: none;
-        border-radius: 9999px;
         font-size: 16px;
-        font-weight: 600;
-        text-transform: uppercase;
-        cursor: pointer;
+        min-height: 24px;
       }
 
-      /* Hardware acceleration for smooth animations */
-      .header,
-      .hero__button,
-      .product-card__image {
-        will-change: transform;
-        transform: translateZ(0);
-        backface-visibility: hidden;
+      .hero__button {
+        padding: 14px 28px;
+        font-size: 14px;
+        min-height: 48px;
       }
+    }
+  </style>
 
-      /* Loading skeleton animation */
-      .loading-skeleton {
-        background: linear-gradient(90deg, #f5f5f5 25%, #e0e0e0 50%, #f5f5f5 75%);
-        background-size: 200% 100%;
-        animation: shimmer 1.5s infinite;
-      }
+  <!-- Load non-critical CSS asynchronously -->
+  <link
+    rel="stylesheet"
+    href="{{ 'base.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'">
+  <link
+    rel="stylesheet"
+    href="{{ 'header.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'">
+  <link
+    rel="stylesheet"
+    href="{{ 'hero.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'">
 
-      @keyframes shimmer {
-        0% {
-          background-position: -200% 0;
-        }
-        100% {
-          background-position: 200% 0;
-        }
-      }
-    </style>
+  <!-- Fallback for browsers that don't support onload -->
+  <noscript>
+    <link rel="stylesheet" href="{{ 'base.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'header.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'hero.css' | asset_url }}">
+</noscript>
 
-    <!-- Non-critical CSS loaded asynchronously -->
-    <link
-      rel="stylesheet"
-      href="{{ 'base.css' | asset_url }}"
-      media="print"
-      onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="{{ 'base.css' | asset_url }}"></noscript>
+  <!-- Performance and Analytics -->
+{{ content_for_header }}
 
-    <!-- SEO Meta Tags -->
-    <title>{{ page_title | escape }}{% if current_tags %}
-        - tagged "{{ current_tags | join: ', ' }}"{% endif %}
-      {% if current_page != 1 %}
-        - Page {{ current_page }}{% endif %}
-      {% unless page_title contains shop.name %}
-        - {{ shop.name }}{% endunless %}
-    </title>
+  <!-- Schema.org Structured Data for SEO -->
+  {% render 'schema-org' %}
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
-
-    <!-- Open Graph Meta Tags for Social Sharing -->
-    <meta property="og:site_name" content="{{ shop.name }}">
-    <meta property="og:url" content="{{ canonical_url }}">
-    <meta property="og:title" content="{{ page_title | escape }}">
-    {% if page_description %}
-      <meta property="og:description" content="{{ page_description | escape }}">
-    {% endif %}
-    {% if page_image %}
-      <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
-      <meta property="og:image:width" content="1200">
-      <meta property="og:image:height" content="630">
-    {% endif %}
-    <meta property="og:type" content="website">
-
-      <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ page_title | escape }}">
-    {% if page_description %}
-      <meta name="twitter:description" content="{{ page_description | escape }}">
-    {% endif %}
-    {% if page_image %}
-      <meta name="twitter:image" content="{{ page_image | image_url: width: 1200 }}">
-  {% endif %}
-
-    <!-- Performance and Analytics -->
-    {{ content_for_header }}
-
-    <!-- Service Worker Registration -->
-    <script>
-      // Register service worker for advanced caching
+  <!-- Service Worker Registration -->
+  <script>
+      // Register service worker for performance optimization
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('{{ "service-worker.js" | asset_url }}')
-            .then(function(registration) {
-              console.log('🚀 Veyra Service Worker registered successfully:', registration.scope);
-              
-              // Check for updates
-              registration.addEventListener('updatefound', function() {
-                const newWorker = registration.installing;
-                newWorker.addEventListener('statechange', function() {
-                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // New service worker available
-                    console.log('🔄 New service worker available');
-                  }
-                });
-              });
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('{{ 'service-worker.js' | asset_url }}')
+            .then(registration => {
+              console.log('✅ Service Worker registered:', registration);
             })
-            .catch(function(error) {
-              console.error('❌ Service Worker registration failed:', error);
+            .catch(error => {
+              console.warn('⚠️ Service Worker registration failed:', error);
             });
         });
       }
-    </script>
-  </head>
+  </script>
 
-  <body class="template-{{ template | split: '.' | first }}">
+  <!-- Font loading optimization to prevent CLS -->
+  <link
+    rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap">
+  </noscript>
 
+  <!-- Performance monitoring script -->
+  <script src="{{ 'performance.js' | asset_url }}" defer></script>
 
-    <!-- Header Section -->
-    {% section 'header' %}
+  <!-- Meta tags for better SEO -->
+  <title>{{ page_title | escape }}{% if current_tags %}
+      - tagged "{{ current_tags | join: ', ' }}"{% endif %}
+    {% if current_page != 1 %}
+      - Page {{ current_page }}{% endif %}
+    {% unless page_title contains shop.name %}
+      - {{ shop.name }}{% endunless %}
+  </title>
 
-    <!-- Main Content -->
-    <main id="main-content" role="main">
-      {{ content_for_layout }}
-  </main>
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <!-- Open Graph meta tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  {% if page_description %}
+    <meta property="og:description" content="{{ page_description | escape }}">
+  {% endif %}
+  {% if page_image %}
+    <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
+  {% endif %}
+  <meta property="og:site_name" content="{{ shop.name }}">
+
+    <!-- Twitter Card meta tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title | escape }}">
+  {% if page_description %}
+    <meta name="twitter:description" content="{{ page_description | escape }}">
+  {% endif %}
+  {% if page_image %}
+    <meta name="twitter:image" content="{{ page_image | image_url: width: 1200 }}">
+  {% endif %}
+
+  <!-- Favicon -->
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="{{ 'favicon-32x32.png' | asset_url }}">
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="{{ 'favicon-16x16.png' | asset_url }}">
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="{{ 'apple-touch-icon.png' | asset_url }}">
+
+    <!-- Manifest for PWA -->
+  <link rel="manifest" href="{{ 'site.webmanifest' | asset_url }}">
+
+    <!-- Theme color for mobile browsers -->
+  <meta name="theme-color" content="#111111">
+  <meta name="msapplication-TileColor" content="#111111">
+</head>
+
+<body class="template-{{ template | split: '.' | first }}">
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content
+</a>
+
+  <!-- Header Section -->
+  {% section 'header' %}
+
+  <!-- Main Content -->
+  <main id="main-content" role="main">
+    {{ content_for_layout }}
+</main>
 
     <!-- Footer Section -->
     {% section 'footer' %}
 
     <!-- Performance Monitoring Script -->
-    <script src="{{ 'performance.js' | asset_url }}" defer></script>
-
-    <!-- Advanced Performance Features -->
-    <script>
-      // Advanced performance optimizations
-      document.addEventListener('DOMContentLoaded', function() {
-        
-        // Intersection Observer for performance monitoring
-        if ('IntersectionObserver' in window) {
-          const performanceObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                // Track when elements become visible for performance metrics
-                const element = entry.target;
-                if (element.dataset.performanceTrack) {
-                  trackElementPerformance(element);
-                }
+  <script>
+      // Performance monitoring initialization
+      document.addEventListener('DOMContentLoaded', () => {
+        // Track page load performance
+        if ('PerformanceObserver' in window) {
+          const observer = new PerformanceObserver((list) => {
+            list.getEntries().forEach((entry) => {
+              if (entry.entryType === 'navigation') {
+                console.log('🚀 Page Load Performance:', {
+                  'DOM Content Loaded': entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart + 'ms',
+                  'Load Complete': entry.loadEventEnd - entry.loadEventStart + 'ms',
+                  'Total Load Time': entry.loadEventEnd - entry.fetchStart + 'ms'
+                });
               }
             });
-          }, {
-            threshold: 0.1,
-            rootMargin: '50px'
           });
-          
-          // Observe elements marked for performance tracking
-          document.querySelectorAll('[data-performance-track]').forEach(el => {
-            performanceObserver.observe(el);
-          });
+          observer.observe({ entryTypes: ['navigation'] });
         }
-        
-        // Request Animation Frame for smooth animations
-        function smoothScrollTo(target) {
-          const targetElement = document.querySelector(target);
-          if (targetElement) {
-            const targetPosition = targetElement.offsetTop - 100;
-            const startPosition = window.pageYOffset;
-            const distance = targetPosition - startPosition;
-            const duration = 1000;
-            let start = null;
-            
-            function animation(currentTime) {
-              if (start === null) start = currentTime;
-              const timeElapsed = currentTime - start;
-              const run = ease(timeElapsed, startPosition, distance, duration);
-              window.scrollTo(0, run);
-              if (timeElapsed < duration) requestAnimationFrame(animation);
-            }
-            
-            function ease(t, b, c, d) {
-              t /= d / 2;
-              if (t < 1) return c / 2 * t * t + b;
-              t--;
-              return -c / 2 * (t * (t - 2) - 1) + b;
-            }
-            
-            requestAnimationFrame(animation);
-          }
-        }
-        
-        // Performance tracking function
-        function trackElementPerformance(element) {
-          const elementId = element.dataset.performanceTrack;
-          const loadTime = performance.now();
-          
-          console.log(`📊 Performance: Element ${elementId} loaded in ${loadTime.toFixed(2)}ms`);
-          
-          // Send to analytics if available
-          if (window.gtag) {
-            window.gtag('event', 'element_performance', {
-              'element_id': elementId,
-              'load_time': loadTime
-            });
-          }
-        }
-        
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-          anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            smoothScrollTo(this.getAttribute('href'));
-          });
-        });
-        
-        // Lazy load non-critical images
-        if ('loading' in HTMLImageElement.prototype) {
-          const lazyImages = document.querySelectorAll('img[data-src]');
-          lazyImages.forEach(img => {
-            img.src = img.dataset.src;
-            img.classList.add('lazy-loaded');
-          });
-        }
-        
-        // Performance metrics display
-        if (window.performance && window.performance.getEntriesByType) {
-          const navigationEntries = performance.getEntriesByType('navigation');
-          if (navigationEntries.length > 0) {
-            const navEntry = navigationEntries[0];
-            console.log('📊 Page Load Performance:', {
-              'DOM Content Loaded': navEntry.domContentLoadedEventEnd - navEntry.domContentLoadedEventStart + 'ms',
-              'Load Complete': navEntry.loadEventEnd - navEntry.loadEventStart + 'ms',
-              'Total Load Time': navEntry.loadEventEnd - navEntry.fetchStart + 'ms'
-            });
-          }
-        }
+    
+        // Add loading class to body for CSS optimizations
+        document.body.classList.add('loaded');
       });
-    </script>
-  </body>
-</html>
+    
+      // Track user interactions for FID optimization
+      let firstInput = true;
+      ['click', 'touchstart', 'keydown'].forEach(eventType => {
+        document.addEventListener(eventType, () => {
+          if (firstInput) {
+            firstInput = false;
+            console.log('🎯 First Input Detected:', eventType);
+          }
+        }, { once: true });
+      });
+  </script>
+
+  <!-- Fallback CSS loading -->
+  <script>
+      // Ensure CSS is loaded even if onload fails
+      setTimeout(() => {
+        const links = document.querySelectorAll('link[media="print"]');
+        links.forEach(link => {
+          if (link.media === 'print') {
+            link.media = 'all';
+          }
+        });
+      }, 3000);
+  </script>
+</body></html>

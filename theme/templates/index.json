@@ -12,9 +12,9 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "background_image": "shopify://shop_images/Acer_Wallpaper_01_5000x2814_432b296c-893f-47e0-84f6-e6c797ee7748.jpg",
-        "headline": "Elevate Your Style",
-        "subheadline": "Discover our curated collection of modern fashion essentials designed for the contemporary lifestyle.",
+        "background_image": "shopify://shop_images/flat-lay-woman-style-accessories-red-knitted-sweater-checkered-shirt-denim-jeans-black-leather-boots-hat-autumn-fashion-trend-view-from-vintage-photo-camera-traveler-outfit_1.jpg",
+        "title": "ELEVATE YOUR STYLE",
+        "subtitle": "Discover our curated collection of modern fashion essentials designed for the contemporary lifestyle.",
         "button_label": "Shop Now",
         "button_link": "/collections/all"
       }
@@ -84,6 +84,13 @@
         "resume_link": "/assets/Kheyreddine_Hadri_Resume.pdf",
         "github_link": "https://github.com/kheyreddine/Veyra"
       }
+    },
+    "theme-features": {
+      "type": "theme-features",
+      "settings": {
+        "title": "What This Theme Demonstrates",
+        "subtitle": "A comprehensive showcase of advanced Shopify development skills, performance optimizations, and custom functionality that demonstrates senior-level expertise."
+      }
     }
   },
   "order": [
@@ -91,6 +98,7 @@
     "product-showcase",
     "testimonials",
     "recently-viewed",
-    "portfolio-info"
+    "portfolio-info",
+    "theme-features"
   ]
 }

@@ -1,0 +1,213 @@
+{% comment %} 
+    Theme Features Section - Technical Skills Showcase 
+    - Business Problem: Clients need to see the full scope of technical capabilities 
+    - Solution: Comprehensive feature showcase highlighting performance, UX, and custom functionality 
+    - Client Value: Demonstrates senior-level Shopify development skills and problem-solving ability 
+    - Technical Achievement: Responsive grid layout with staggered animations and merchant customization 
+{% endcomment %}
+
+<!-- Import theme-features-specific styles -->
+{{ 'theme-features.css' | asset_url | stylesheet_tag }}
+
+<section class="theme-features" data-section-id="{{ section.id }}">
+  <div class="container">
+
+    <!-- Section Header -->
+    <div class="theme-features__header">
+      <h2 class="theme-features__title">
+        {% if section.settings.title != blank %}
+          {{ section.settings.title }}
+        {% else %}
+          What This Theme Demonstrates
+        {% endif %}
+      </h2>
+
+      {% if section.settings.subtitle != blank %}
+        <p class="theme-features__subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Features Grid -->
+    <div class="theme-features__grid">
+
+      <!-- Performance Optimizations -->
+      <div class="theme-features__card" data-feature="performance">
+        <div class="theme-features__icon">⚡</div>
+        <h3 class="theme-features__feature-title">Performance Optimizations</h3>
+        <p class="theme-features__description">
+          Built with lazy loading, responsive images, service worker caching, and WebP support for lightning-fast load times.
+        </p>
+      </div>
+
+      <!-- SEO & Structured Data -->
+      <div class="theme-features__card" data-feature="seo">
+        <div class="theme-features__icon">🔍</div>
+        <h3 class="theme-features__feature-title">SEO & Structured Data</h3>
+        <p class="theme-features__description">
+          Enhanced with Schema.org, Open Graph, and Twitter Cards to improve discoverability and boost search rankings.
+        </p>
+      </div>
+
+      <!-- Product Variants & Quick View -->
+      <div class="theme-features__card" data-feature="product-experience">
+        <div class="theme-features__icon">🛍️</div>
+        <h3 class="theme-features__feature-title">Product Variants & Quick View</h3>
+        <p class="theme-features__description">
+          Seamless shopping experience with color swatches, size options, and quick view modals for faster decisions.
+        </p>
+      </div>
+
+      <!-- Cart Functionality -->
+      <div class="theme-features__card" data-feature="cart">
+        <div class="theme-features__icon">🛒</div>
+        <h3 class="theme-features__feature-title">Cart Functionality</h3>
+        <p class="theme-features__description">
+          Full cart page with add-to-cart, live quantity updates, and optimized checkout flow.
+        </p>
+      </div>
+
+      <!-- Contact Page -->
+      <div class="theme-features__card" data-feature="contact">
+        <div class="theme-features__icon">✉️</div>
+        <h3 class="theme-features__feature-title">Contact Page</h3>
+        <p class="theme-features__description">
+          Custom contact page with responsive form and clean design for easy communication.
+        </p>
+      </div>
+
+      <!-- Catalog & Collections -->
+      <div class="theme-features__card" data-feature="catalog">
+        <div class="theme-features__icon">📂</div>
+        <h3 class="theme-features__feature-title">Catalog & Collections</h3>
+        <p class="theme-features__description">
+          Dynamic collection pages with responsive product grids and smooth filtering options.
+        </p>
+      </div>
+
+      <!-- Search Functionality -->
+      <div class="theme-features__card" data-feature="search">
+        <div class="theme-features__icon">🔎</div>
+        <h3 class="theme-features__feature-title">Search Functionality</h3>
+        <p class="theme-features__description">
+          Search results page with product listings, plus live autocomplete suggestions in the global search bar.
+        </p>
+      </div>
+
+      <!-- Recently Viewed Products -->
+      <div class="theme-features__card" data-feature="recently-viewed">
+        <div class="theme-features__icon">👀</div>
+        <h3 class="theme-features__feature-title">Recently Viewed Products</h3>
+        <p class="theme-features__description">
+          Engaging user experience powered by localStorage, showing shoppers the items they've recently browsed.
+        </p>
+      </div>
+
+      <!-- Responsive Design -->
+      <div class="theme-features__card" data-feature="responsive">
+        <div class="theme-features__icon">📱</div>
+        <h3 class="theme-features__feature-title">Responsive Design</h3>
+        <p class="theme-features__description">
+          Mobile-first layouts, scalable typography, and fluid grids for a seamless experience on every device.
+        </p>
+      </div>
+
+      <!-- Testimonials -->
+      <div class="theme-features__card" data-feature="testimonials">
+        <div class="theme-features__icon">💬</div>
+        <h3 class="theme-features__feature-title">Testimonials</h3>
+        <p class="theme-features__description">
+          Clean, professional testimonial section to build trust and credibility.
+        </p>
+      </div>
+
+      <!-- Portfolio Info Section -->
+      <div class="theme-features__card" data-feature="portfolio">
+        <div class="theme-features__icon">👨‍💻</div>
+        <h3 class="theme-features__feature-title">Portfolio Info Section</h3>
+        <p class="theme-features__description">
+          About the developer, resume download, and GitHub link integrated directly into the theme demo.
+        </p>
+      </div>
+
+      <!-- Advanced Integrations -->
+      <div class="theme-features__card" data-feature="integrations">
+        <div class="theme-features__icon">🌐</div>
+        <h3 class="theme-features__feature-title">Advanced Integrations</h3>
+        <p class="theme-features__description">
+          Custom APIs, checkout extensions, and other advanced features implemented during development.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% comment %} 
+    JavaScript for staggered animations and interactive features 
+{% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const themeFeatures = document.querySelector('.theme-features');
+    if (!themeFeatures) return;
+  
+    // Staggered fade-in animation for feature cards
+    const featureCards = themeFeatures.querySelectorAll('.theme-features__card');
+    featureCards.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+      
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 150 * index);
+    });
+  
+    // Interactive hover effects and click tracking
+    featureCards.forEach(card => {
+      card.addEventListener('click', function() {
+        const feature = this.dataset.feature;
+        console.log('🚀 Feature clicked:', feature);
+        
+        // Add click animation
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          this.style.transform = 'scale(1)';
+        }, 150);
+      });
+    });
+  });
+</script>
+
+{% comment %} 
+    Section Schema for Theme Editor Customization 
+{% endcomment %}
+{% schema %}
+  {
+    "name": "Theme Features",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Section Title",
+        "default": "What This Theme Demonstrates",
+        "info": "Main heading for the features showcase section"
+      }, {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Section Subtitle",
+        "default": "A comprehensive showcase of advanced Shopify development skills, performance optimizations, and custom functionality that demonstrates senior-level expertise.",
+        "info": "Optional subtitle below the main heading"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Theme Features",
+        "category": "Developer Portfolio"
+      }
+    ]
+  }
+{% endschema %}
