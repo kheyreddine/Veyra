@@ -23,17 +23,7 @@
       "type": "product-showcase",
       "settings": {
         "title": "Featured Products",
-        "subtitle": "Discover our latest collection",
-        "product_list": [
-          "black-leather-bag",
-          "blue-silk-tuxedo",
-          "chequered-red-shirt",
-          "classic-leather-jacket",
-          "classic-varsity-top",
-          "dark-denim-top",
-          "floral-white-top",
-          "led-high-tops"
-        ]
+        "subtitle": "Discover our latest collection"
       }
     },
     "testimonials": {
@@ -83,12 +73,24 @@
         "section_title": "Recently Viewed",
         "show_recently_viewed": true
       }
+    },
+    "portfolio-info": {
+      "type": "portfolio-info",
+      "settings": {
+        "title": "About the Developer",
+        "headline": "Kheyreddine Hadri",
+        "bio_text": "Kheyreddine Hadri is a Frontend & Shopify Developer with 4+ years of experience building responsive, high-performing websites. Skilled in Shopify (themes, apps, Liquid, GraphQL APIs), Webflow, and Angular, with a strong focus on performance, SEO, and user experience. I combine technical expertise with design sensitivity to deliver e-commerce solutions that look beautiful and scale.",
+        "developer_image": "shopify://shop_images/WhatsApp_Image_2025-08-24_at_10.26.35_PM.jpg",
+        "resume_link": "/assets/Kheyreddine_Hadri_Resume.pdf",
+        "github_link": "https://github.com/kheyreddine/Veyra"
+      }
     }
   },
   "order": [
     "hero",
     "product-showcase",
     "testimonials",
-    "recently-viewed"
+    "recently-viewed",
+    "portfolio-info"
   ]
 }

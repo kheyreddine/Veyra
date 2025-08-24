@@ -1,0 +1,400 @@
+/* ==========================================================================
+   Portfolio Info Section Styles for Veyra Clothing Theme
+   - Developer showcase with professional bio and action buttons
+   - Responsive two-column layout: stacked on mobile, side-by-side on desktop
+   - Smooth fade-in animations and hover effects
+   - BEM naming convention for maintainability
+   ========================================================================== */
+
+/* Portfolio Info Container */
+.portfolio-info {
+  padding: var(--spacing-3xl) 0;
+  background-color: var(--color-white);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Section Header */
+.portfolio-info__header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.portfolio-info__title {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Two-Column Layout Container */
+.portfolio-info__content {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1000px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease-out 0.2s forwards;
+}
+
+/* Bio Column (Left Side) */
+.portfolio-info__bio-column {
+  flex: 1;
+  text-align: center;
+}
+
+.portfolio-info__headline {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin: 0 0 24px 0;
+  line-height: 1.2;
+}
+
+.portfolio-info__bio {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-gray-dark);
+  margin: 0;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Action Column (Right Side) */
+.portfolio-info__action-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Developer Photo */
+.portfolio-info__photo {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid var(--color-gray-light);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+}
+
+.portfolio-info__photo:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-lg);
+}
+
+.portfolio-info__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portfolio-info__photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-secondary);
+}
+
+/* Action Buttons Container */
+.portfolio-info__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 280px;
+}
+
+/* Button Base Styles */
+.portfolio-info__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  text-decoration: none;
+  border-radius: var(--border-radius-pill);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-normal);
+  border: 2px solid var(--color-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio-info__button:hover {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.portfolio-info__button:active {
+  transform: translateY(0);
+}
+
+/* Button Icons */
+.portfolio-info__button-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Button Text */
+.portfolio-info__button-text {
+  font-weight: var(--font-weight-medium);
+}
+
+/* Resume Button Specific Styles */
+.portfolio-info__button--resume {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.portfolio-info__button--resume:hover {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+}
+
+/* GitHub Button Specific Styles */
+.portfolio-info__button--github {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.portfolio-info__button--github:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* Fade-in Animation Keyframes */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+/* Mobile Styles (≤ 640px) */
+@media (max-width: 640px) {
+  .portfolio-info {
+    padding: 60px 0;
+  }
+  
+  .portfolio-info__header {
+    margin-bottom: 40px;
+  }
+  
+  .portfolio-info__title {
+    font-size: 28px;
+  }
+  
+  .portfolio-info__content {
+    gap: 40px;
+    padding: 0 20px;
+  }
+  
+  .portfolio-info__headline {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .portfolio-info__bio {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  
+  .portfolio-info__photo {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .portfolio-info__actions {
+    max-width: 260px;
+  }
+  
+  .portfolio-info__button {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+}
+
+/* Tablet Styles (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .portfolio-info {
+    padding: 80px 0;
+  }
+  
+  .portfolio-info__title {
+    font-size: 36px;
+  }
+  
+  .portfolio-info__content {
+    gap: 56px;
+    padding: 0 40px;
+  }
+  
+  .portfolio-info__headline {
+    font-size: 32px;
+  }
+  
+  .portfolio-info__bio {
+    font-size: 17px;
+    max-width: 600px;
+  }
+  
+  .portfolio-info__photo {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .portfolio-info__actions {
+    max-width: 300px;
+  }
+}
+
+/* Desktop Styles (1025px+) */
+@media (min-width: 1025px) {
+  .portfolio-info {
+    padding: 120px 0;
+  }
+  
+  .portfolio-info__title {
+    font-size: 40px;
+  }
+  
+  .portfolio-info__content {
+    flex-direction: row;
+    align-items: center;
+    gap: 80px;
+    text-align: left;
+  }
+  
+  .portfolio-info__bio-column {
+    text-align: left;
+    flex: 1.2;
+  }
+  
+  .portfolio-info__headline {
+    font-size: 36px;
+    margin-bottom: 28px;
+  }
+  
+  .portfolio-info__bio {
+    font-size: 18px;
+    line-height: 1.7;
+    max-width: none;
+    margin: 0;
+  }
+  
+  .portfolio-info__action-column {
+    flex: 0.8;
+    align-items: flex-start;
+  }
+  
+  .portfolio-info__photo {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .portfolio-info__actions {
+    align-items: flex-start;
+    max-width: 280px;
+  }
+  
+  .portfolio-info__button {
+    padding: 18px 28px;
+    font-size: 16px;
+  }
+}
+
+/* Large Desktop Styles (1200px+) */
+@media (min-width: 1200px) {
+  .portfolio-info__content {
+    max-width: 1200px;
+    gap: 100px;
+  }
+  
+  .portfolio-info__title {
+    font-size: 48px;
+  }
+  
+  .portfolio-info__headline {
+    font-size: 40px;
+  }
+  
+  .portfolio-info__bio {
+    font-size: 19px;
+  }
+  
+  .portfolio-info__photo {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+/* ==========================================================================
+   Performance Optimizations
+   ========================================================================== */
+
+/* Hardware acceleration for animations */
+.portfolio-info__photo,
+.portfolio-info__button {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ==========================================================================
+   Accessibility Enhancements
+   ========================================================================== */
+
+/* Focus states for keyboard navigation */
+.portfolio-info__button:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-info__title,
+  .portfolio-info__content,
+  .portfolio-info__photo,
+  .portfolio-info__button {
+    animation: none;
+    transition: none;
+  }
+  
+  .portfolio-info__button:hover {
+    transform: none;
+  }
+  
+  .portfolio-info__photo:hover {
+    transform: none;
+  }
+}
