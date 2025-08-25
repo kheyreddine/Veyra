@@ -1,9 +1,9 @@
 {% comment %} 
-      Portfolio Info Section - Developer Showcase 
-      - Business Problem: Clients need to see developer's expertise and credentials 
-      - Solution: Professional portfolio section with bio, photo, and action buttons 
-      - Client Value: Demonstrates developer's skills and provides easy access to credentials 
-      - Technical Achievement: Responsive two-column layout with smooth animations 
+        Portfolio Info Section - Developer Showcase 
+        - Business Problem: Clients need to see developer's expertise and credentials 
+        - Solution: Professional portfolio section with bio, photo, and action buttons 
+        - Client Value: Demonstrates developer's skills and provides easy access to credentials 
+        - Technical Achievement: Responsive two-column layout with smooth animations 
 {% endcomment %}
 
 <!-- Import portfolio-info-specific styles -->
@@ -87,9 +87,10 @@
 
           <!-- Resume Download Button -->
           <a
-            href="#"
+            href="{% if section.settings.resume_link != blank %}{{ section.settings.resume_link }}{% else %}{{ 'Kheyreddine_Hadri_Resume.pdf' | asset_url }}{% endif %}"
             class="portfolio-info__button portfolio-info__button--resume"
-            onclick="downloadResume(); return false;">
+            target="_blank"
+            rel="noopener noreferrer">
             <span class="portfolio-info__button-icon">📄</span>
             <span class="portfolio-info__button-text">Download Resume</span>
           </a>
@@ -112,61 +113,6 @@
 
   </div>
 </section>
-
-<script>
-  function downloadResume() {
-  // Try multiple methods to download the resume
-  const resumeUrl = '{{ "Kheyreddine_Hadri_Resume.pdf" | asset_url }}';
-  
-  console.log('Attempting to download resume from:', resumeUrl);
-  
-  // Method 1: Fetch and create blob download (most reliable)
-  fetch(resumeUrl)
-    .then(response => {
-      console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
-      
-      if (response.ok) {
-        return response.blob();
-      }
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    })
-    .then(blob => {
-      console.log('Blob received:', blob.type, blob.size);
-      
-      // Create download link
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'Kheyreddine_Hadri_Resume.pdf';
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      console.log('Download initiated successfully');
-    })
-    .catch(error => {
-      console.error('Error downloading resume:', error);
-      
-      // Fallback: Try direct download
-      const link = document.createElement('a');
-      link.href = resumeUrl;
-      link.download = 'Kheyreddine_Hadri_Resume.pdf';
-      link.target = '_blank';
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Final fallback: Open in new tab
-      setTimeout(() => {
-        window.open(resumeUrl, '_blank');
-      }, 100);
-    });
-  }
-</script>
 
 {% schema %}
   {

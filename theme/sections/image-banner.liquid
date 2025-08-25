@@ -1,9 +1,12 @@
 {% comment %} 
-  Image Banner Section - Hero with Portfolio Information
-  - Full-width hero section with customizable content
-  - Portfolio developer information and links
-  - Mobile-first responsive design
+      Image Banner Section - Hero with Portfolio Information
+      - Full-width hero section with customizable content
+      - Portfolio developer information and links
+      - Mobile-first responsive design
 {% endcomment %}
+
+<!-- Import hero-portfolio-specific styles -->
+{{ 'hero-portfolio.css' | asset_url | stylesheet_tag }}
 
 <section class="image-banner" style="{% if section.settings.background_image %}background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');{% endif %}">
 
@@ -32,25 +35,25 @@
       </div>
     {% endif %}
 
-    <!-- Developer Portfolio Information -->
-    <div class="portfolio-info">
-      <p class="portfolio-info__text">
+    <!-- Developer Portfolio Information - Hero Subline -->
+    <div class="hero-portfolio">
+      <p class="hero-portfolio__text">
         👨‍💻 Built by Kheyreddine Hadri – Frontend & Shopify Developer
       </p>
-      <div class="portfolio-info__buttons">
+      <div class="hero-portfolio__buttons">
         <a
           href="{{ 'Kheyreddine_Hadri_Resume.pdf' | asset_url }}"
-          class="portfolio-info__button portfolio-info__button--resume"
+          class="hero-portfolio__button hero-portfolio__button--resume"
           target="_blank"
           rel="noopener noreferrer">
-          📄 View Resume
+          📄 Resume
         </a>
         <a
           href="https://github.com/kheyreddine/Veyra"
-          class="portfolio-info__button portfolio-info__button--github"
+          class="hero-portfolio__button hero-portfolio__button--github"
           target="_blank"
           rel="noopener noreferrer">
-          💻 GitHub Repo
+          💻 GitHub
         </a>
       </div>
     </div>
@@ -59,50 +62,49 @@
 </section>
 
 {% schema %}
-{
-  "name": "Image banner",
-  "tag": "section",
-  "class": "section",
-  "disabled_on": {
-    "groups": ["header", "footer"]
-  },
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "background_image",
-      "label": "Background Image",
-      "info": "Recommended size: 1920x800px"
+  {
+    "name": "Image banner",
+    "tag": "section",
+    "class": "section",
+    "disabled_on": {
+      "groups": ["header", "footer"]
     },
-    {
-      "type": "text",
-      "id": "heading",
-      "default": "ELEVATE YOUR STYLE",
-      "label": "Heading"
-    },
-    {
-      "type": "textarea",
-      "id": "subheading",
-      "default": "Discover our curated collection of modern fashion essentials designed for the contemporary lifestyle.",
-      "label": "Subheading"
-    },
-    {
-      "type": "text",
-      "id": "button_label",
-      "default": "Shop Now",
-      "label": "Button Label"
-    },
-    {
-      "type": "url",
-      "id": "button_link",
-      "default": "/collections/all",
-      "label": "Button Link"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Image banner",
-      "category": "Custom Sections"
-    }
-  ]
-}
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background Image",
+        "info": "Recommended size: 1920x800px"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "default": "ELEVATE YOUR STYLE",
+        "label": "Heading"
+      },
+      {
+        "type": "textarea",
+        "id": "subheading",
+        "default": "Discover our curated collection of modern fashion essentials designed for the contemporary lifestyle.",
+        "label": "Subheading"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "default": "Shop Now",
+        "label": "Button Label"
+      }, {
+        "type": "url",
+        "id": "button_link",
+        "default": "/collections/all",
+        "label": "Button Link"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image banner",
+        "category": "Custom Sections"
+      }
+    ]
+  }
 {% endschema %}

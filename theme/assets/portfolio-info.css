@@ -9,7 +9,7 @@
 /* Portfolio Info Container */
 .portfolio-info {
   padding: var(--spacing-3xl) 0;
-  background-color: transparent; /* Remove white background */
+  background-color: var(--color-white, #ffffff);
   position: relative;
   overflow: hidden;
 }
@@ -119,31 +119,33 @@
   max-width: 280px;
 }
 
-/* Button Base Styles */
+/* Button Base Styles - Using Theme's Standard Button Design */
 .portfolio-info__button {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
   padding: 16px 24px;
-  background-color: var(--color-primary);
-  color: var(--color-white);
+  background-color: var(--color-primary, #111111);
+  color: var(--color-white, #ffffff);
   text-decoration: none;
-  border-radius: var(--border-radius-pill);
-  font-family: var(--font-body);
+  border-radius: var(--border-radius-pill, 9999px);
+  font-family: var(--font-body, 'Inter', system-ui, sans-serif);
   font-size: 16px;
-  font-weight: var(--font-weight-medium);
-  transition: all var(--transition-normal);
-  border: 2px solid var(--color-primary);
+  font-weight: var(--font-weight-medium, 500);
+  transition: all var(--transition-normal, 0.3s ease);
+  border: 2px solid var(--color-primary, #111111);
   position: relative;
   overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .portfolio-info__button:hover {
-  background-color: var(--color-white);
-  color: var(--color-primary);
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-primary, #111111);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.15));
 }
 
 .portfolio-info__button:active {
@@ -158,30 +160,31 @@
 
 /* Button Text */
 .portfolio-info__button-text {
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium, 500);
 }
 
-/* Resume Button Specific Styles */
+/* Resume Button Specific Styles - Primary Button */
 .portfolio-info__button--resume {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
+  background-color: var(--color-primary, #111111);
+  border-color: var(--color-primary, #111111);
+  color: var(--color-white, #ffffff);
 }
 
 .portfolio-info__button--resume:hover {
-  background-color: var(--color-white);
-  color: var(--color-primary);
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-primary, #111111);
 }
 
-/* GitHub Button Specific Styles */
+/* GitHub Button Specific Styles - Secondary Button */
 .portfolio-info__button--github {
-  background-color: var(--color-white);
-  color: var(--color-primary);
-  border-color: var(--color-primary);
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-primary, #111111);
+  border-color: var(--color-primary, #111111);
 }
 
 .portfolio-info__button--github:hover {
-  background-color: var(--color-primary);
-  color: var(--color-white);
+  background-color: var(--color-primary, #111111);
+  color: var(--color-white, #ffffff);
 }
 
 /* Fade-in Animation Keyframes */
@@ -376,7 +379,7 @@ html {
 
 /* Focus states for keyboard navigation */
 .portfolio-info__button:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-accent, #e63946);
   outline-offset: 2px;
 }
 
@@ -396,118 +399,5 @@ html {
   
   .portfolio-info__photo:hover {
     transform: none;
-  }
-}
-
-/* ==========================================================================
-   Hero Banner Portfolio Info Override Styles
-   ========================================================================== */
-
-/* Portfolio Info Container for Hero Banner */
-.portfolio-info {
-  margin-top: 24px;
-  padding: 14px 16px;
-  background: rgba(17, 17, 17, 0.38);
-  border-radius: 12px;
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-  position: relative;
-  z-index: 1;
-}
-
-/* Portfolio Text Styling for Hero Banner */
-.portfolio-info__text {
-  color: var(--color-white, #ffffff);
-  font-size: 14px;
-  margin: 0 0 12px 0;
-  font-weight: 500;
-  text-shadow: none;
-  position: relative;
-  z-index: 1;
-}
-
-/* Portfolio Buttons Container for Hero Banner */
-.portfolio-info__buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 1;
-}
-
-/* Individual Portfolio Button Styling for Hero Banner */
-.portfolio-info__button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 14px;
-  background-color: rgba(255, 255, 255, 0.12);
-  color: var(--color-white, #ffffff);
-  text-decoration: none;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  min-height: 30px;
-  line-height: 1.2;
-  min-width: auto;
-  gap: 6px;
-}
-
-.portfolio-info__button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
-}
-
-/* Specific Styling for Resume Button in Hero Banner */
-.portfolio-info__button--resume {
-  background-color: transparent;
-  border-color: rgba(230, 57, 70, 0.6);
-  color: var(--color-white, #ffffff);
-  box-shadow: inset 0 0 0 1px rgba(230, 57, 70, 0.35);
-}
-
-.portfolio-info__button--resume:hover {
-  background-color: rgba(230, 57, 70, 0.1);
-  border-color: rgba(230, 57, 70, 0.85);
-}
-
-/* Specific Styling for GitHub Button in Hero Banner */
-.portfolio-info__button--github {
-  background-color: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.18);
-  color: var(--color-white, #ffffff);
-}
-
-.portfolio-info__button--github:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.28);
-}
-
-/* Mobile Responsive Styles for Hero Banner */
-@media (max-width: 640px) {
-  .portfolio-info {
-    margin-top: 20px;
-    padding: 12px 14px;
-    max-width: 320px;
-  }
-
-  .portfolio-info__buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .portfolio-info__button {
-    width: 100%;
-    max-width: 160px;
-    padding: 8px 12px;
-    font-size: 11px;
-    min-height: 28px;
   }
 }
