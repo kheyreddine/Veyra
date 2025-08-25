@@ -202,31 +202,46 @@
 
   {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}">
-  {% endif %}
+{% endif %}
 
-  <!-- Open Graph meta tags -->
+  {% comment %} 
+    Social Sharing Metadata (OG + Twitter)
+    Business Problem: LinkedIn/Twitter previews were missing or incorrect.
+    Solution: Static meta tags rendered server-side in <head>, placed AFTER content_for_header
+    to avoid being overridden by Shopify defaults.
+    Image Strategy: Prefer resource image (page_image). If not present, use theme setting
+    (settings.social_share_image) which should match the hero (image-banner) background.
+    Final Fallback: assets/preview.jpg. All images are cropped to 1200x630 for LinkedIn. 
+  {% endcomment %}
+
+  {% assign share_title = "Veyra Clothing – Custom Shopify 2.0 Theme by Kheyreddine Hadri" %}
+  {% assign share_description = "A custom-built Shopify 2.0 theme showcasing advanced frontend, Liquid, and performance skills. Includes search autocomplete, cart, recently viewed products, and performance optimizations." %}
+
+  {%- assign share_image_url = nil -%}
+  {%- if page_image -%}
+    {%- assign share_image_url = page_image | image_url: width: 1200, height: 630, crop: 'center' -%}
+  {%- elsif settings.social_share_image -%}
+    {%- assign share_image_url = settings.social_share_image | image_url: width: 1200, height: 630, crop: 'center' -%}
+  {%- else -%}
+    {%- comment %} Fallback asset must exist in assets as preview.jpg (>=1200x630) {%- endcomment -%}
+    {%- assign share_image_url = 'preview.jpg' | asset_url -%}
+  {%- endif -%}
+
+  <!-- Open Graph meta tags for social platforms (Facebook, LinkedIn) -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:title" content="{{ share_title }}">
+  <meta property="og:description" content="{{ share_description }}">
   <meta property="og:url" content="{{ canonical_url }}">
-  {% if page_description %}
-    <meta property="og:description" content="{{ page_description | escape }}">
-  {% endif %}
-  {% if page_image %}
-    <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
-  {% endif %}
+  <meta property="og:image" content="{{ share_image_url }}">
   <meta property="og:site_name" content="{{ shop.name }}">
 
     <!-- Twitter Card meta tags -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ page_title | escape }}">
-  {% if page_description %}
-    <meta name="twitter:description" content="{{ page_description | escape }}">
-  {% endif %}
-  {% if page_image %}
-    <meta name="twitter:image" content="{{ page_image | image_url: width: 1200 }}">
-  {% endif %}
+  <meta name="twitter:title" content="{{ share_title }}">
+  <meta name="twitter:description" content="{{ share_description }}">
+  <meta name="twitter:image" content="{{ share_image_url }}">
 
-  <!-- Favicon -->
+    <!-- Favicon -->
   <link
     rel="icon"
     type="image/svg+xml"
@@ -269,7 +284,7 @@
 
   <!-- Skip to main content for accessibility -->
   {% comment %} <a href="#main-content" class="skip-link">Skip to main content
-                              </a> {% endcomment %}
+                                </a> {% endcomment %}
 
   <!-- Header Section -->
   {% section 'header' %}

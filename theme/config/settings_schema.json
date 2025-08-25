@@ -61,5 +61,16 @@
         "unit": "px"
       }
     ]
+  },
+  {
+    "name": "Social Sharing",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "social_share_image",
+        "label": "Default Social Share Image",
+        "info": "Used for Open Graph and Twitter cards when a page-specific image is not available. Recommended 1200x630px. Set this to the same image as the hero (image-banner) background for consistent previews."
+      }
+    ]
   }
 ]
