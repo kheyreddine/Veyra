@@ -13,6 +13,9 @@
  * Business Problem Solved: Slow page loading hurts user experience
  * and conversion rates. This implementation improves Core Web Vitals
  * and demonstrates performance optimization expertise.
+ * 
+ * UPDATED: Performance widget now more compact and less intrusive
+ * CACHE BUST: v2.0 - Force update for performance widget styling
  */
 
 (function() {
@@ -23,7 +26,8 @@
     constructor() {
       this.metrics = {};
       this.observers = {};
-      this.widgetVisible = false;
+      this.widgetVisible = true; // Start as visible since widget is shown by default
+      this.widgetMinimized = false; // Track minimize state separately
       this.init();
     }
 
@@ -356,22 +360,25 @@
       // Add styles
       const style = document.createElement('style');
       style.textContent = `
-        .unified-performance-widget {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: rgba(0, 0, 0, 0.95);
-          color: white;
-          border-radius: 12px;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          z-index: 10000;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          min-width: 280px;
-          max-width: 320px;
-        }
+                 .unified-performance-widget {
+           position: fixed;
+           bottom: 20px;
+           right: 20px;
+           background: rgba(0, 0, 0, 0.4) !important; /* Reduced opacity - CACHE BUST v2.0 */
+           color: white;
+           border-radius: 4px !important; /* Smaller radius - CACHE BUST v2.0 */
+           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+           z-index: 10000;
+           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important; /* Smaller shadow - CACHE BUST v2.0 */
+           backdrop-filter: blur(4px) !important; /* Less blur - CACHE BUST v2.0 */
+           border: 1px solid rgba(255, 255, 255, 0.1);
+           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+           min-width: 160px !important; /* Smaller size - CACHE BUST v2.0 */
+           max-width: 200px !important; /* Smaller size - CACHE BUST v2.0 */
+           font-size: 10px !important; /* Smaller font - CACHE BUST v2.0 */
+           /* Force update to ensure changes take effect */
+           transform: translateZ(0);
+         }
         
         .unified-performance-widget.minimized {
           width: 60px;
@@ -398,18 +405,17 @@
           transform: translateX(100%);
         }
         
-        .widget-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 16px 20px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          cursor: move;
-        }
+                 .widget-header {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           padding: 6px 10px !important; /* Smaller padding - CACHE BUST v2.0 */
+           border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+         }
         
         .widget-title {
           font-weight: 600;
-          font-size: 14px;
+          font-size: 11px;
           color: #fbbf24;
         }
         
@@ -435,9 +441,9 @@
           transform: rotate(180deg);
         }
         
-        .widget-content {
-          padding: 20px;
-        }
+                 .widget-content {
+           padding: 10px !important; /* Smaller padding - CACHE BUST v2.0 */
+         }
         
         .metrics-section {
           margin-bottom: 20px;
@@ -520,6 +526,7 @@
           .unified-performance-widget {
             right: 10px;
             left: 10px;
+            bottom: 10px;
             min-width: auto;
             max-width: none;
           }
@@ -542,65 +549,6 @@
         }
       `;
       document.head.appendChild(style);
-      
-      // Make widget draggable
-      this.makeWidgetDraggable(metricsDiv);
-    }
-
-    /**
-     * Make widget draggable
-     */
-    makeWidgetDraggable(widget) {
-      const header = widget.querySelector('.widget-header');
-      let isDragging = false;
-      let currentX;
-      let currentY;
-      let initialX;
-      let initialY;
-      let xOffset = 0;
-      let yOffset = 0;
-
-      header.addEventListener('mousedown', (e) => {
-        initialX = e.clientX - xOffset;
-        initialY = e.clientY - yOffset;
-        
-        if (e.target === header || e.target.parentNode === header) {
-          isDragging = true;
-        }
-      });
-
-      document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-          e.preventDefault();
-          currentX = e.clientX - initialX;
-          currentY = e.clientY - initialY;
-          xOffset = currentX;
-          yOffset = currentY;
-
-          // Constrain to viewport
-          const rect = widget.getBoundingClientRect();
-          const maxX = window.innerWidth - rect.width;
-          const maxY = window.innerHeight - rect.height;
-          
-          currentX = Math.max(0, Math.min(currentX, maxX));
-          currentY = Math.max(0, Math.min(currentY, maxY));
-
-          this.setTranslate(currentX, currentY, widget);
-        }
-      });
-
-      document.addEventListener('mouseup', () => {
-        initialX = currentX;
-        initialY = currentY;
-        isDragging = false;
-      });
-    }
-
-    /**
-     * Set widget position
-     */
-    setTranslate(xPos, yPos, el) {
-      el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
     }
 
     /**
@@ -610,14 +558,15 @@
       const widget = document.getElementById('unified-performance-widget');
       const toggle = widget.querySelector('.widget-toggle');
       
+      // If widget is currently visible, hide it
       if (this.widgetVisible) {
         this.hideWidget();
+        toggle.classList.add('rotated');
       } else {
+        // If widget is hidden, show it
         this.showWidget();
+        toggle.classList.remove('rotated');
       }
-      
-      // Rotate toggle icon
-      toggle.classList.toggle('rotated');
     }
 
     /**
@@ -627,6 +576,11 @@
       const widget = document.getElementById('unified-performance-widget');
       widget.classList.remove('hidden');
       this.widgetVisible = true;
+      
+      // If widget was minimized, keep it minimized when showing
+      if (this.widgetMinimized) {
+        widget.classList.add('minimized');
+      }
     }
 
     /**
@@ -636,6 +590,10 @@
       const widget = document.getElementById('unified-performance-widget');
       widget.classList.add('hidden');
       this.widgetVisible = false;
+      
+      // Reset minimized state when hiding
+      this.widgetMinimized = false;
+      widget.classList.remove('minimized');
     }
 
     /**
@@ -643,7 +601,12 @@
      */
     minimizeWidget() {
       const widget = document.getElementById('unified-performance-widget');
-      widget.classList.toggle('minimized');
+      
+      // Only allow minimize if widget is visible
+      if (this.widgetVisible) {
+        widget.classList.toggle('minimized');
+        this.widgetMinimized = !this.widgetMinimized;
+      }
     }
 
     /**

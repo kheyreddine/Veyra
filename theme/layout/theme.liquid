@@ -18,7 +18,7 @@
       as="style">
     <link
       rel="preload"
-      href="{{ 'hero.css' | asset_url }}"
+      href="{{ 'image-banner.css' | asset_url }}"
       as="style">
     <link
       rel="preload"
@@ -55,7 +55,7 @@
     }
 
     /* Prevent layout shifts during font loading */
-    .hero {
+    .image-banner {
       min-height: 500px;
       height: 60vh;
       max-height: 800px;
@@ -67,7 +67,7 @@
       contain: layout style paint;
     }
 
-    .hero__title {
+    .image-banner__heading {
       font-size: 48px;
       font-weight: 700;
       color: var(--color-white);
@@ -79,7 +79,7 @@
       contain: layout style;
     }
 
-    .hero__subtitle {
+    .image-banner__subheading {
       font-size: 20px;
       font-weight: 400;
       color: var(--color-white);
@@ -90,7 +90,7 @@
       contain: layout style;
     }
 
-    .hero__button {
+    .image-banner__button {
       display: inline-block;
       padding: 16px 32px;
       background-color: var(--color-accent);
@@ -109,22 +109,22 @@
 
     /* Mobile responsive critical CSS */
     @media (max-width: 640px) {
-      .hero {
+      .image-banner {
         min-height: 400px;
         height: 50vh;
       }
 
-      .hero__title {
+      .image-banner__heading {
         font-size: 32px;
         min-height: 40px;
       }
 
-      .hero__subtitle {
+      .image-banner__subheading {
         font-size: 16px;
         min-height: 24px;
       }
 
-      .hero__button {
+      .image-banner__button {
         padding: 14px 28px;
         font-size: 14px;
         min-height: 48px;
@@ -145,7 +145,7 @@
     onload="this.media='all'">
   <link
     rel="stylesheet"
-    href="{{ 'hero.css' | asset_url }}"
+    href="{{ 'image-banner.css' | asset_url }}"
     media="print"
     onload="this.media='all'">
 
@@ -153,7 +153,7 @@
   <noscript>
     <link rel="stylesheet" href="{{ 'base.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'header.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'hero.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'image-banner.css' | asset_url }}">
 </noscript>
 
   <!-- Performance and Analytics -->
@@ -242,18 +242,23 @@
     sizes="180x180"
     href="{{ 'apple-touch-icon.png' | asset_url }}">
 
-    <!-- Manifest for PWA -->
-  <link rel="manifest" href="{{ 'site.webmanifest' | asset_url }}">
+  <!-- Manifest for PWA - Temporarily disabled due to syntax issues -->
+  <!-- <link rel="manifest" href="{{ 'site.webmanifest' | asset_url }}"> -->
 
-    <!-- Theme color for mobile browsers -->
+  <!-- Theme color for mobile browsers -->
   <meta name="theme-color" content="#111111">
-  <meta name="msapplication-TileColor" content="#111111">
+<meta name="msapplication-TileColor" content="#111111">
+
+  <!-- Portfolio Shortcut Styles - Critical for hero section -->
+  {{ 'portfolio-shortcut.css' | asset_url | stylesheet_tag }}
 </head>
 
 <body class="template-{{ template | split: '.' | first }}">
+
+
   <!-- Skip to main content for accessibility -->
-  <a href="#main-content" class="skip-link">Skip to main content
-</a>
+  {% comment %} <a href="#main-content" class="skip-link">Skip to main content
+                        </a> {% endcomment %}
 
   <!-- Header Section -->
   {% section 'header' %}
@@ -263,10 +268,10 @@
     {{ content_for_layout }}
 </main>
 
-    <!-- Footer Section -->
-    {% section 'footer' %}
+  <!-- Footer Section -->
+  {% section 'footer' %}
 
-    <!-- Performance Monitoring Script -->
+  <!-- Performance Monitoring Script -->
   <script>
       // Performance monitoring initialization
       document.addEventListener('DOMContentLoaded', () => {

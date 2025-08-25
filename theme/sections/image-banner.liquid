@@ -1,0 +1,108 @@
+{% comment %} 
+  Image Banner Section - Hero with Portfolio Information
+  - Full-width hero section with customizable content
+  - Portfolio developer information and links
+  - Mobile-first responsive design
+{% endcomment %}
+
+<section class="image-banner" style="{% if section.settings.background_image %}background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');{% endif %}">
+
+  <div class="image-banner__content">
+
+    <!-- Main heading -->
+    {% if section.settings.heading != blank %}
+      <h2 class="image-banner__heading">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    <!-- Subheading -->
+    {% if section.settings.subheading != blank %}
+      <p class="image-banner__subheading">
+        {{ section.settings.subheading }}
+      </p>
+    {% endif %}
+
+    <!-- Call-to-action button -->
+    {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+      <div class="image-banner__button-wrapper">
+        <a href="{{ section.settings.button_link }}" class="image-banner__button">
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {% endif %}
+
+    <!-- Developer Portfolio Information -->
+    <div class="portfolio-info">
+      <p class="portfolio-info__text">
+        👨‍💻 Built by Kheyreddine Hadri – Frontend & Shopify Developer
+      </p>
+      <div class="portfolio-info__buttons">
+        <a
+          href="{{ 'Kheyreddine_Hadri_Resume.pdf' | asset_url }}"
+          class="portfolio-info__button portfolio-info__button--resume"
+          target="_blank"
+          rel="noopener noreferrer">
+          📄 View Resume
+        </a>
+        <a
+          href="https://github.com/kheyreddine/Veyra"
+          class="portfolio-info__button portfolio-info__button--github"
+          target="_blank"
+          rel="noopener noreferrer">
+          💻 GitHub Repo
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image banner",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "info": "Recommended size: 1920x800px"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "ELEVATE YOUR STYLE",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "default": "Discover our curated collection of modern fashion essentials designed for the contemporary lifestyle.",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Shop Now",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "default": "/collections/all",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image banner",
+      "category": "Custom Sections"
+    }
+  ]
+}
+{% endschema %}

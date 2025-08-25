@@ -1,16 +1,16 @@
 /* ==========================================================================
-   Hero Section Styles for Veyra Clothing Theme - Lighthouse Optimized
-   - Fixed CLS issues by preventing layout shifts during font loading (was 1.074, target <0.1)
-   - Optimized LCP by reducing background image complexity (was 1.75s, target <1.2s)
-   - Added performance monitoring attributes
+   Image Banner Section Styles for Veyra Clothing Theme
+   - Hero section with portfolio information
+   - Mobile-first responsive design
+   - Performance optimized with CLS prevention
    - BEM naming convention for maintainability
    ========================================================================== */
 
-/* Hero Container - Fixed dimensions to prevent CLS */
-.hero {
+/* Image Banner Container */
+.image-banner {
   position: relative;
   min-height: 500px;
-  height: 60vh; /* Fixed height to prevent layout shifts */
+  height: 60vh;
   max-height: 800px;
   background-color: var(--color-secondary, #f5f5f5);
   background-size: cover;
@@ -28,24 +28,8 @@
   backface-visibility: hidden;
 }
 
-/* Hero overlay for better text readability */
-.hero__overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.4) 0%,
-    rgba(0, 0, 0, 0.2) 50%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
-  z-index: 1;
-}
-
-/* Hero content container */
-.hero__content {
+/* Image Banner Content Container */
+.image-banner__content {
   position: relative;
   z-index: 2;
   text-align: center;
@@ -59,8 +43,8 @@
   align-items: center;
 }
 
-/* Hero title - Fixed dimensions to prevent CLS */
-.hero__title {
+/* Image Banner Heading */
+.image-banner__heading {
   font-family: var(--font-heading, 'Poppins', system-ui, sans-serif);
   font-size: 48px;
   font-weight: 700;
@@ -75,8 +59,8 @@
   contain: layout style;
 }
 
-/* Hero subtitle - Fixed dimensions to prevent CLS */
-.hero__subtitle {
+/* Image Banner Subheading */
+.image-banner__subheading {
   font-family: var(--font-body, 'Inter', system-ui, sans-serif);
   font-size: 20px;
   font-weight: 400;
@@ -90,16 +74,17 @@
   contain: layout style;
 }
 
-/* Hero button wrapper */
-.hero__button-wrapper {
+/* Image Banner Button Wrapper */
+.image-banner__button-wrapper {
   /* Fixed dimensions to prevent CLS */
   min-height: 56px;
   display: flex;
   justify-content: center;
+  margin-bottom: 32px;
 }
 
-/* Hero button */
-.hero__button {
+/* Image Banner Button */
+.image-banner__button {
   display: inline-block;
   padding: 16px 32px;
   background-color: var(--color-accent, #e63946);
@@ -118,7 +103,7 @@
   contain: layout style;
 }
 
-.hero__button:hover {
+.image-banner__button:hover {
   background-color: var(--color-primary, #111111);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
@@ -126,26 +111,26 @@
 
 /* Responsive Design - Mobile First */
 @media (max-width: 640px) {
-  .hero {
+  .image-banner {
     min-height: 400px;
     height: 50vh;
   }
 
-  .hero__title {
+  .image-banner__heading {
     font-size: 32px;
     letter-spacing: 1px;
     /* Fixed dimensions to prevent CLS on mobile */
     min-height: 40px;
   }
 
-  .hero__subtitle {
+  .image-banner__subheading {
     font-size: 16px;
     margin: 0 0 24px 0;
     /* Fixed dimensions to prevent CLS on mobile */
     min-height: 24px;
   }
 
-  .hero__button {
+  .image-banner__button {
     padding: 14px 28px;
     font-size: 14px;
     /* Fixed dimensions to prevent CLS on mobile */
@@ -155,18 +140,18 @@
 
 /* Tablet Styles */
 @media (min-width: 641px) and (max-width: 1024px) {
-  .hero {
+  .image-banner {
     min-height: 450px;
     height: 55vh;
   }
 
-  .hero__title {
+  .image-banner__heading {
     font-size: 40px;
     /* Fixed dimensions to prevent CLS on tablet */
     min-height: 48px;
   }
 
-  .hero__subtitle {
+  .image-banner__subheading {
     font-size: 18px;
     /* Fixed dimensions to prevent CLS on tablet */
     min-height: 27px;
@@ -175,19 +160,19 @@
 
 /* Desktop Styles */
 @media (min-width: 1025px) {
-  .hero {
+  .image-banner {
     min-height: 500px;
     height: 60vh;
     max-height: 800px;
   }
 
-  .hero__title {
+  .image-banner__heading {
     font-size: 48px;
     /* Fixed dimensions to prevent CLS on desktop */
     min-height: 58px;
   }
 
-  .hero__subtitle {
+  .image-banner__subheading {
     font-size: 20px;
     /* Fixed dimensions to prevent CLS on desktop */
     min-height: 30px;
@@ -195,8 +180,8 @@
 }
 
 /* Font loading optimization to prevent CLS */
-.hero__title,
-.hero__subtitle {
+.image-banner__heading,
+.image-banner__subheading {
   /* Prevent layout shifts during font loading */
   font-display: swap;
   /* Fallback font to prevent layout shifts */
@@ -204,46 +189,26 @@
 }
 
 /* Performance optimizations */
-.hero {
+.image-banner {
   /* Optimize for Core Web Vitals */
   content-visibility: auto;
   contain-intrinsic-size: 500px;
 }
 
-/* Loading state to prevent CLS */
-.hero--loading {
-  background: linear-gradient(90deg, #f5f5f5 25%, #e0e0e0 50%, #f5f5f5 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-  .hero__overlay {
-    background: rgba(0, 0, 0, 0.7);
-  }
-  
-  .hero__button {
+  .image-banner__button {
     border: 2px solid var(--color-white, #ffffff);
   }
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .hero__button {
+  .image-banner__button {
     transition: none;
   }
   
-  .hero__button:hover {
+  .image-banner__button:hover {
     transform: none;
   }
 }

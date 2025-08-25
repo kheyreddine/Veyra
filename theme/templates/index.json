@@ -10,11 +10,11 @@
 {
   "sections": {
     "hero": {
-      "type": "hero",
+      "type": "image-banner",
       "settings": {
         "background_image": "shopify://shop_images/flat-lay-woman-style-accessories-red-knitted-sweater-checkered-shirt-denim-jeans-black-leather-boots-hat-autumn-fashion-trend-view-from-vintage-photo-camera-traveler-outfit_1.jpg",
-        "title": "ELEVATE YOUR STYLE",
-        "subtitle": "Discover our curated collection of modern fashion essentials designed for the contemporary lifestyle.",
+        "heading": "ELEVATE YOUR STYLE",
+        "subheading": "Discover our curated collection of modern fashion essentials designed for the contemporary lifestyle.",
         "button_label": "Shop Now",
         "button_link": "/collections/all"
       }
