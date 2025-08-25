@@ -82,6 +82,8 @@
 
 /* Customer Avatar */
 .testimonial__avatar {
+  display: flex;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
