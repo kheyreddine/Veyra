@@ -106,13 +106,14 @@
 .image-banner__button:hover {
   background-color: var(--color-primary, #111111);
   transform: translateY(-2px);
+  color: var(--color-white, #ffffff);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive Design - Mobile First */
 @media (max-width: 640px) {
   .image-banner {
-    min-height: 400px;
+    /* min-height: 400px; */
     height: 50vh;
   }
 

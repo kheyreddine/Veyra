@@ -1,0 +1,112 @@
+{% comment %} 
+  Performance Widget Section 
+  - Global performance monitoring widget that can be enabled/disabled 
+  - Shows Core Web Vitals and performance metrics 
+  - Configurable from theme editor with schema settings 
+  - Business Problem: Performance monitoring needs to be configurable and visible across all pages 
+  - Solution: Dedicated section with theme editor controls 
+  - Client Value: Easy performance monitoring configuration and consistent display 
+{% endcomment %}
+
+{% comment %} 
+  Only render if widget is enabled in theme editor 
+{% endcomment %}
+{% if section.settings.enabled %}
+  <div
+    class="performance-widget-section"
+    data-section-id="{{ section.id }}"
+    data-section-type="performance-widget"
+    data-widget-enabled="{{ section.settings.enabled }}"
+    data-widget-position="{{ section.settings.position }}"
+    data-widget-mobile="{{ section.settings.show_on_mobile }}"
+    data-widget-auto-hide="{{ section.settings.auto_hide }}">
+
+    {% comment %} 
+      Widget is injected by performance.js
+      This section just provides configuration and ensures the widget loads 
+    {% endcomment %}
+
+    <!-- Performance Widget Configuration -->
+    <script>
+      // Pass section settings to performance widget
+      window.performanceWidgetSettings = {
+        enabled: {{ section.settings.enabled | json }},
+        position: {{ section.settings.position | json }},
+        showOnMobile: {{ section.settings.show_on_mobile | json }},
+        autoHide: {{ section.settings.auto_hide | json }}
+      };
+    </script>
+  </div>{% endif %}
+
+{% comment %} 
+  Link the CSS file for this section 
+{% endcomment %}
+{{ 'performance-widget.css' | asset_url | stylesheet_tag }}
+
+{% comment %} 
+  Section Schema for Theme Editor 
+{% endcomment %}
+{% schema %}
+  {
+    "name": "Performance Widget",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Performance Monitoring Widget"
+      },
+      {
+        "type": "paragraph",
+        "content": "Configure the performance monitoring widget that displays Core Web Vitals and performance metrics."
+      },
+      {
+        "type": "checkbox",
+        "id": "enabled",
+        "label": "Enable Performance Widget",
+        "default": true,
+        "info": "Show performance monitoring widget on all pages"
+      },
+      {
+        "type": "select",
+        "id": "position",
+        "label": "Widget Position",
+        "options": [
+          {
+            "value": "bottom-right",
+            "label": "Bottom Right"
+          }, {
+            "value": "bottom-left",
+            "label": "Bottom Left"
+          }, {
+            "value": "top-right",
+            "label": "Top Right"
+          }, {
+            "value": "top-left",
+            "label": "Top Left"
+          }
+        ],
+        "default": "bottom-right",
+        "info": "Position of the performance widget on the page"
+      }, {
+        "type": "checkbox",
+        "id": "show_on_mobile",
+        "label": "Show on Mobile Devices",
+        "default": true,
+        "info": "Display the widget on mobile and tablet devices"
+      }, {
+        "type": "checkbox",
+        "id": "auto_hide",
+        "label": "Auto-hide After Delay",
+        "default": false,
+        "info": "Automatically hide the widget after 30 seconds (for less intrusive monitoring)"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Performance Widget",
+        "category": "Performance"
+      }
+    ]
+  }
+{% endschema %}

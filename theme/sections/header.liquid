@@ -50,7 +50,7 @@
 
       <!-- Developer Portfolio Link -->
       <div class="header__developer">
-        <a href="#portfolio-info" class="header__developer-link" onclick="scrollToPortfolio(event)">
+        <a href="{{ routes.root_url }}#portfolio-info" class="header__developer-link">
           <span class="header__developer-icon">👨‍💻</span>
           <span class="header__developer-text">About Developer</span>
         </a>
@@ -139,7 +139,7 @@
           {% endfor %}
           <!-- Developer Portfolio Link (Mobile) -->
           <li class="header__mobile-nav-item">
-            <a href="#portfolio-info" class="header__mobile-nav-link" onclick="scrollToPortfolio(event)">
+            <a href="{{ routes.root_url }}#portfolio-info" class="header__mobile-nav-link">
               <span class="header__mobile-nav-icon">👨‍💻</span>
               About Developer
             </a>
@@ -162,7 +162,7 @@
           </li>
           <!-- Developer Portfolio Link (Mobile) -->
           <li class="header__mobile-nav-item">
-            <a href="#portfolio-info" class="header__mobile-nav-link" onclick="scrollToPortfolio(event)">
+            <a href="{{ routes.root_url }}#portfolio-info" class="header__mobile-nav-link">
               <span class="header__mobile-nav-icon">👨‍💻</span>
               About Developer
             </a>
@@ -193,36 +193,12 @@
 
 {% comment %} Link the CSS files {% endcomment %}
 {{ 'header.css' | asset_url | stylesheet_tag }}
-{{ 'search-autocomplete.css' | asset_url | stylesheet_tag }}
 {{ 'portfolio-shortcut.css' | asset_url | stylesheet_tag }}
 
 {% comment %} 
-  JavaScript for Mobile Menu Toggle and Search Autocomplete
+  JavaScript for Mobile Menu Toggle
 {% endcomment %}
-{{ 'search-autocomplete.js' | asset_url | script_tag }}
 <script>
-  // Smooth scroll function for portfolio section
-  function scrollToPortfolio(event) {
-    event.preventDefault();
-    const portfolioSection = document.getElementById('portfolio-info');
-    if (portfolioSection) {
-      portfolioSection.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-      
-      // Close mobile menu if open
-      const header = document.querySelector('.header');
-      if (header.classList.contains('header--mobile-open')) {
-        header.classList.remove('header--mobile-open');
-        const mobileToggle = document.querySelector('.header__mobile-toggle');
-        if (mobileToggle) {
-          mobileToggle.setAttribute('aria-expanded', 'false');
-        }
-      }
-    }
-  }
-
   document.addEventListener('DOMContentLoaded', function() {
   const mobileToggle = document.querySelector('.header__mobile-toggle');
   const mobileNav = document.querySelector('.header__mobile-nav');

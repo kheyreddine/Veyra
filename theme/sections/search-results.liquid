@@ -1,8 +1,8 @@
 {% comment %} 
-    Search Results Section 
-    - Displays search results in a responsive grid 
-    - Handles both results and no results scenarios 
-    - Uses BEM naming convention for maintainability 
+        Search Results Section 
+        - Displays search results in a responsive grid 
+        - Handles both results and no results scenarios 
+        - Uses BEM naming convention for maintainability 
 {% endcomment %}
 
 <section
@@ -23,11 +23,6 @@
     {% if search.results_count > 0 %}
       <!-- Results Found -->
       <div class="search-results__content">
-        <div class="search-results__info">
-          <p class="search-results__count">
-            {{ search.results_count }} product{{ search.results_count | pluralize }} found
-          </p>
-        </div>
 
         <!-- Product Grid -->
         <div
@@ -45,7 +40,7 @@
                   <div class="search-results__image-wrapper">
                     {% if product.featured_image %}
                       <img
-                        src="{{ product.featured_image | img_url: '400x500', crop: 'center' }}"
+                        src="{{ product.featured_image | img_url: '400x500' }}"
                         alt="{{ product.featured_image.alt | escape }}"
                         class="search-results__image"
                         loading="lazy"
@@ -168,7 +163,7 @@
 {{ 'search-results.css' | asset_url | stylesheet_tag }}
 
 {% comment %} 
-    JavaScript for staggered animations and responsive grid 
+        JavaScript for staggered animations and responsive grid 
 {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -216,7 +211,7 @@
 </script>
 
 {% comment %} 
-    Section Schema for Theme Editor 
+        Section Schema for Theme Editor 
 {% endcomment %}
 {% schema %}
   {

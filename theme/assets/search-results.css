@@ -43,11 +43,6 @@
   line-height: 1.6;
 }
 
-/* Search Results Info */
-.search-results__info {
-  text-align: center;
-  margin-bottom: var(--spacing-2xl);
-}
 
 .search-results__count {
   font-family: var(--font-body);

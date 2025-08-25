@@ -9,7 +9,7 @@
 
 ## 🎯 **Portfolio Showcase**
 
-This theme demonstrates **senior-level Shopify development skills** by solving real business problems with advanced technical implementations. Every feature is designed to impress potential clients and showcase expertise in:
+This theme demonstrates **Shopify development skills** by solving real business problems with advanced technical implementations.
 
 - **Performance Optimization** - Core Web Vitals, lazy loading, service workers
 - **Custom Functionality** - Advanced features not found in basic themes

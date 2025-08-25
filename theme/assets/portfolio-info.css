@@ -313,7 +313,7 @@
   
   .portfolio-info__action-column {
     flex: 0.8;
-    align-items: flex-start;
+    align-items: center;
   }
   
   .portfolio-info__photo {
@@ -322,7 +322,7 @@
   }
   
   .portfolio-info__actions {
-    align-items: flex-start;
+    align-items: center;
     max-width: 280px;
   }
   

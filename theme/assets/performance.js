@@ -14,8 +14,20 @@
  * and conversion rates. This implementation improves Core Web Vitals
  * and demonstrates performance optimization expertise.
  * 
- * UPDATED: Performance widget now more compact and less intrusive
- * CACHE BUST: v2.0 - Force update for performance widget styling
+ * FIXED: Performance widget functionality restored and simplified
+ * - Removed toggle/minimize features completely
+ * - Added single ❌ close button (top-right)
+ * - Widget pinned bottom-right, always visible until closed
+ * - Compact size, readable font, no blurry styles
+ * - Dark background with white text for clarity
+ * - Responsive design for mobile and desktop
+ * 
+ * FIXED: Widget now loads globally on all pages with schema toggle
+ * - Added schema settings for theme editor control
+ * - Widget loads consistently across all templates
+ * - Dedicated CSS file for better modularity
+ * 
+ * CACHE BUST: v4.0 - Global loading and schema toggle implementation
  */
 
 (function() {
@@ -26,15 +38,77 @@
     constructor() {
       this.metrics = {};
       this.observers = {};
-      this.widgetVisible = true; // Start as visible since widget is shown by default
-      this.widgetMinimized = false; // Track minimize state separately
+      this.widgetVisible = true; // Start as visible
+      this.settings = this.getSettings(); // Get settings from theme editor
       this.init();
+    }
+
+    /**
+     * Get performance widget settings from theme editor
+     * FIXED: Added schema toggle functionality
+     */
+    getSettings() {
+      // Default settings if not configured in theme editor
+      const defaults = {
+        enabled: true,
+        position: 'bottom-right',
+        showOnMobile: true,
+        autoHide: false
+      };
+
+      // Try to get settings from section first
+      try {
+        if (window.performanceWidgetSettings) {
+          console.log('📋 Using section settings for performance widget');
+          return {
+            enabled: window.performanceWidgetSettings.enabled,
+            position: window.performanceWidgetSettings.position || 'bottom-right',
+            showOnMobile: window.performanceWidgetSettings.showOnMobile !== false,
+            autoHide: window.performanceWidgetSettings.autoHide || false
+          };
+        }
+      } catch (e) {
+        console.warn('Could not load section settings:', e);
+      }
+
+      // Try to get settings from theme editor
+      try {
+        if (window.Shopify && window.Shopify.theme) {
+          const themeSettings = window.Shopify.theme.settings;
+          if (themeSettings && themeSettings.performance_widget_enabled !== undefined) {
+            console.log('⚙️ Using theme settings for performance widget');
+            return {
+              enabled: themeSettings.performance_widget_enabled,
+              position: themeSettings.performance_widget_position || 'bottom-right',
+              showOnMobile: themeSettings.performance_widget_mobile !== false,
+              autoHide: themeSettings.performance_widget_auto_hide || false
+            };
+          }
+        }
+      } catch (e) {
+        console.warn('Could not load theme settings, using defaults:', e);
+      }
+
+      console.log('🔧 Using default settings for performance widget');
+      return defaults;
     }
 
     /**
      * Initialize performance monitoring
      */
     init() {
+      // Check if widget is enabled in theme editor
+      if (!this.settings.enabled) {
+        console.log('🚫 Performance widget disabled in theme editor');
+        return;
+      }
+
+      // Check mobile visibility setting
+      if (!this.settings.showOnMobile && window.innerWidth <= 768) {
+        console.log('📱 Performance widget hidden on mobile per theme settings');
+        return;
+      }
+
       // Only run if performance APIs are available
       if (!('PerformanceObserver' in window)) {
         console.warn('PerformanceObserver not supported');
@@ -284,328 +358,80 @@
      * Setup performance metrics display
      */
     setupPerformanceMetrics() {
-      // Create unified performance metrics display
-      this.createUnifiedMetricsDisplay();
+      // Create simplified performance metrics display
+      this.createSimplifiedMetricsDisplay();
       
       // Update metrics every second
       setInterval(() => this.updateMetricsDisplay(), 1000);
     }
 
     /**
-     * Create unified performance metrics display
+     * Create simplified performance metrics display
+     * FIXED: Updated to use new CSS classes and improved structure
      */
-    createUnifiedMetricsDisplay() {
+    createSimplifiedMetricsDisplay() {
       const metricsDiv = document.createElement('div');
-      metricsDiv.id = 'unified-performance-widget';
-      metricsDiv.className = 'unified-performance-widget';
+      metricsDiv.id = 'veyra-performance-widget';
+      metricsDiv.className = 'performance-widget';
       metricsDiv.innerHTML = `
-        <div class="widget-header">
-          <span class="widget-title">🚀 Performance</span>
-          <button class="widget-toggle" onclick="window.veyraPerformance.toggleWidget()" title="Toggle Performance Widget">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-              <path d="M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z"/>
-            </svg>
+        <div class="performance-widget__header">
+          <span class="performance-widget__title">🚀 Performance</span>
+          <button class="performance-widget__close" onclick="window.veyraPerformance.hideWidget()" title="Close Performance Widget">
+            ❌
           </button>
         </div>
         
-        <div class="widget-content">
-          <div class="metrics-section">
+        <div class="performance-widget__content">
+          <div class="performance-widget__metrics-section">
             <h4>Core Web Vitals</h4>
-            <div class="metric">
-              <span class="metric-label">LCP:</span>
-              <span class="metric-value" id="lcp-value">-</span>
-              <span class="metric-target">(< 1.2s)</span>
+            <div class="performance-widget__metric">
+              <span class="performance-widget__metric-label">LCP:</span>
+              <span class="performance-widget__metric-value" id="lcp-value">-</span>
+              <span class="performance-widget__metric-target">(< 1.2s)</span>
             </div>
-            <div class="metric">
-              <span class="metric-label">CLS:</span>
-              <span class="metric-value" id="cls-value">-</span>
-              <span class="metric-target">(< 0.1)</span>
+            <div class="performance-widget__metric">
+              <span class="performance-widget__metric-label">CLS:</span>
+              <span class="performance-widget__metric-value" id="cls-value">-</span>
+              <span class="performance-widget__metric-target">(< 0.1)</span>
             </div>
-            <div class="metric">
-              <span class="metric-label">FID:</span>
-              <span class="metric-value" id="fid-value">-</span>
-              <span class="metric-target">(< 100ms)</span>
-            </div>
-          </div>
-          
-          <div class="metrics-section">
-            <h4>Performance</h4>
-            <div class="metric">
-              <span class="metric-label">Fonts:</span>
-              <span class="metric-value" id="fonts-status">-</span>
-            </div>
-            <div class="metric">
-              <span class="metric-label">Images:</span>
-              <span class="metric-value" id="images-status">-</span>
+            <div class="performance-widget__metric">
+              <span class="performance-widget__metric-label">FID:</span>
+              <span class="performance-widget__metric-value" id="fid-value">-</span>
+              <span class="performance-widget__metric-target">(< 100ms)</span>
             </div>
           </div>
           
-          <div class="widget-footer">
-            <button class="widget-minimize" onclick="window.veyraPerformance.minimizeWidget()" title="Minimize">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                <path d="M2 6h8v1H2z"/>
-              </svg>
-            </button>
-            <button class="widget-close" onclick="window.veyraPerformance.hideWidget()" title="Close">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                <path d="M6 1.175L10.825 6 6 10.825 1.175 6z"/>
-              </svg>
-            </button>
+          <div class="performance-widget__metrics-section">
+            <h4>Status</h4>
+            <div class="performance-widget__metric">
+              <span class="performance-widget__metric-label">Fonts:</span>
+              <span class="performance-widget__metric-value" id="fonts-status">-</span>
+            </div>
+            <div class="performance-widget__metric">
+              <span class="performance-widget__metric-label">Images:</span>
+              <span class="performance-widget__metric-value" id="images-status">-</span>
+            </div>
           </div>
         </div>
       `;
       
       document.body.appendChild(metricsDiv);
       
-      // Add styles
-      const style = document.createElement('style');
-      style.textContent = `
-                 .unified-performance-widget {
-           position: fixed;
-           bottom: 20px;
-           right: 20px;
-           background: rgba(0, 0, 0, 0.4) !important; /* Reduced opacity - CACHE BUST v2.0 */
-           color: white;
-           border-radius: 4px !important; /* Smaller radius - CACHE BUST v2.0 */
-           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-           z-index: 10000;
-           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important; /* Smaller shadow - CACHE BUST v2.0 */
-           backdrop-filter: blur(4px) !important; /* Less blur - CACHE BUST v2.0 */
-           border: 1px solid rgba(255, 255, 255, 0.1);
-           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-           min-width: 160px !important; /* Smaller size - CACHE BUST v2.0 */
-           max-width: 200px !important; /* Smaller size - CACHE BUST v2.0 */
-           font-size: 10px !important; /* Smaller font - CACHE BUST v2.0 */
-           /* Force update to ensure changes take effect */
-           transform: translateZ(0);
-         }
-        
-        .unified-performance-widget.minimized {
-          width: 60px;
-          height: 60px;
-          overflow: hidden;
-        }
-        
-        .unified-performance-widget.minimized .widget-content {
-          display: none;
-        }
-        
-        .unified-performance-widget.minimized .widget-header {
-          justify-content: center;
-          padding: 20px 0;
-        }
-        
-        .unified-performance-widget.minimized .widget-title {
-          display: none;
-        }
-        
-        .unified-performance-widget.hidden {
-          opacity: 0;
-          pointer-events: none;
-          transform: translateX(100%);
-        }
-        
-                 .widget-header {
-           display: flex;
-           justify-content: space-between;
-           align-items: center;
-           padding: 6px 10px !important; /* Smaller padding - CACHE BUST v2.0 */
-           border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-         }
-        
-        .widget-title {
-          font-weight: 600;
-          font-size: 11px;
-          color: #fbbf24;
-        }
-        
-        .widget-toggle {
-          background: none;
-          border: none;
-          color: #9ca3af;
-          cursor: pointer;
-          padding: 4px;
-          border-radius: 4px;
-          transition: all 0.2s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        
-        .widget-toggle:hover {
-          color: white;
-          background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .widget-toggle.rotated svg {
-          transform: rotate(180deg);
-        }
-        
-                 .widget-content {
-           padding: 10px !important; /* Smaller padding - CACHE BUST v2.0 */
-         }
-        
-        .metrics-section {
-          margin-bottom: 20px;
-        }
-        
-        .metrics-section:last-child {
-          margin-bottom: 0;
-        }
-        
-        .metrics-section h4 {
-          margin: 0 0 12px 0;
-          font-size: 12px;
-          font-weight: 600;
-          color: #9ca3af;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-        
-        .metric {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin: 8px 0;
-          font-size: 13px;
-        }
-        
-        .metric-label {
-          color: #d1d5db;
-          font-weight: 500;
-        }
-        
-        .metric-value {
-          font-weight: 600;
-          font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-        }
-        
-        .metric-target {
-          color: #9ca3af;
-          font-size: 11px;
-          font-weight: 400;
-        }
-        
-        .metric-value.good { color: #10b981; }
-        .metric-value.warning { color: #f59e0b; }
-        .metric-value.poor { color: #ef4444; }
-        
-        .widget-footer {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 20px;
-          padding-top: 16px;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .widget-footer button {
-          background: none;
-          border: none;
-          color: #9ca3af;
-          cursor: pointer;
-          padding: 6px;
-          border-radius: 4px;
-          transition: all 0.2s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        
-        .widget-footer button:hover {
-          color: white;
-          background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .widget-close:hover {
-          color: #ef4444 !important;
-          background: rgba(239, 68, 68, 0.1) !important;
-        }
-        
-        /* Responsive design */
-        @media (max-width: 768px) {
-          .unified-performance-widget {
-            right: 10px;
-            left: 10px;
-            bottom: 10px;
-            min-width: auto;
-            max-width: none;
-          }
-        }
-        
-        /* Animation for widget appearance */
-        @keyframes widgetSlideIn {
-          from {
-            opacity: 0;
-            transform: translateX(100%);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        .unified-performance-widget {
-          animation: widgetSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-      `;
-      document.head.appendChild(style);
+      // Styles are now in performance-widget.css for better modularity
+      console.log('🚀 Performance widget created with new CSS classes and schema support');
     }
 
     /**
-     * Toggle widget visibility
-     */
-    toggleWidget() {
-      const widget = document.getElementById('unified-performance-widget');
-      const toggle = widget.querySelector('.widget-toggle');
-      
-      // If widget is currently visible, hide it
-      if (this.widgetVisible) {
-        this.hideWidget();
-        toggle.classList.add('rotated');
-      } else {
-        // If widget is hidden, show it
-        this.showWidget();
-        toggle.classList.remove('rotated');
-      }
-    }
-
-    /**
-     * Show widget
-     */
-    showWidget() {
-      const widget = document.getElementById('unified-performance-widget');
-      widget.classList.remove('hidden');
-      this.widgetVisible = true;
-      
-      // If widget was minimized, keep it minimized when showing
-      if (this.widgetMinimized) {
-        widget.classList.add('minimized');
-      }
-    }
-
-    /**
-     * Hide widget
+     * Hide widget (single close button functionality)
+     * FIXED: Updated to use new CSS classes for proper hiding
      */
     hideWidget() {
-      const widget = document.getElementById('unified-performance-widget');
-      widget.classList.add('hidden');
-      this.widgetVisible = false;
-      
-      // Reset minimized state when hiding
-      this.widgetMinimized = false;
-      widget.classList.remove('minimized');
-    }
-
-    /**
-     * Minimize widget
-     */
-    minimizeWidget() {
-      const widget = document.getElementById('unified-performance-widget');
-      
-      // Only allow minimize if widget is visible
-      if (this.widgetVisible) {
-        widget.classList.toggle('minimized');
-        this.widgetMinimized = !this.widgetMinimized;
+      const widget = document.getElementById('veyra-performance-widget');
+      if (widget) {
+        // FIXED: Use new CSS classes for proper hiding
+        widget.classList.add('performance-widget--hidden');
+        this.widgetVisible = false;
+        console.log('🚀 Performance widget closed');
       }
     }
 
@@ -622,31 +448,36 @@
       if (lcpEl && this.metrics.lcp) {
         const lcpMs = Math.round(this.metrics.lcp);
         lcpEl.textContent = `${lcpMs}ms`;
-        lcpEl.className = lcpMs < 1200 ? 'good' : lcpMs < 2500 ? 'warning' : 'poor';
+        // FIXED: Use new CSS classes for status colors
+        lcpEl.className = `performance-widget__metric-value ${lcpMs < 1200 ? 'performance-widget__metric-value--good' : lcpMs < 2500 ? 'performance-widget__metric-value--warning' : 'performance-widget__metric-value--poor'}`;
       }
 
       if (clsEl && this.metrics.cls) {
         const clsValue = this.metrics.cls.toFixed(3);
         clsEl.textContent = clsValue;
-        clsEl.className = clsValue < 0.1 ? 'good' : clsValue < 0.25 ? 'warning' : 'poor';
+        // FIXED: Use new CSS classes for status colors
+        clsEl.className = `performance-widget__metric-value ${clsValue < 0.1 ? 'performance-widget__metric-value--good' : clsValue < 0.25 ? 'performance-widget__metric-value--warning' : 'performance-widget__metric-value--poor'}`;
       }
 
       if (fidEl && this.metrics.fid) {
         const fidMs = Math.round(this.metrics.fid);
         fidEl.textContent = `${fidMs}ms`;
-        fidEl.className = fidMs < 100 ? 'good' : fidMs < 300 ? 'warning' : 'poor';
+        // FIXED: Use new CSS classes for status colors
+        fidEl.className = `performance-widget__metric-value ${fidMs < 100 ? 'performance-widget__metric-value--good' : fidMs < 300 ? 'performance-widget__metric-value--warning' : 'performance-widget__metric-value--poor'}`;
       }
 
       if (fontsEl) {
         fontsEl.textContent = this.metrics.fontsLoaded ? '✅' : '⏳';
-        fontsEl.className = this.metrics.fontsLoaded ? 'good' : 'warning';
+        // FIXED: Use new CSS classes for status colors
+        fontsEl.className = `performance-widget__metric-value ${this.metrics.fontsLoaded ? 'performance-widget__metric-value--good' : 'performance-widget__metric-value--warning'}`;
       }
 
       if (imagesEl) {
         const totalImages = document.querySelectorAll('img').length;
         const loadedImages = document.querySelectorAll('img.complete, img.loaded').length;
         imagesEl.textContent = `${loadedImages}/${totalImages}`;
-        imagesEl.className = loadedImages === totalImages ? 'good' : 'warning';
+        // FIXED: Use new CSS classes for status colors
+        imagesEl.className = `performance-widget__metric-value ${loadedImages === totalImages ? 'performance-widget__metric-value--good' : 'performance-widget__metric-value--warning'}`;
       }
     }
 
@@ -692,7 +523,7 @@
       });
       
       // Remove widget
-      const widget = document.getElementById('unified-performance-widget');
+      const widget = document.getElementById('veyra-performance-widget');
       if (widget) {
         widget.remove();
       }

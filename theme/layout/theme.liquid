@@ -229,6 +229,10 @@
   <!-- Favicon -->
   <link
     rel="icon"
+    type="image/svg+xml"
+    href="{{ 'favicon.svg' | asset_url }}">
+  <link
+    rel="icon"
     type="image/png"
     sizes="32x32"
     href="{{ 'favicon-32x32.png' | asset_url }}">
@@ -241,6 +245,10 @@
     rel="apple-touch-icon"
     sizes="180x180"
     href="{{ 'apple-touch-icon.png' | asset_url }}">
+  <link
+    rel="mask-icon"
+    href="{{ 'favicon.svg' | asset_url }}"
+    color="#111111">
 
   <!-- Manifest for PWA - Temporarily disabled due to syntax issues -->
   <!-- <link rel="manifest" href="{{ 'site.webmanifest' | asset_url }}"> -->
@@ -250,7 +258,10 @@
 <meta name="msapplication-TileColor" content="#111111">
 
   <!-- Portfolio Shortcut Styles - Critical for hero section -->
-  {{ 'portfolio-shortcut.css' | asset_url | stylesheet_tag }}
+{{ 'portfolio-shortcut.css' | asset_url | stylesheet_tag }}
+
+  <!-- Performance Widget Styles - Global loading for all pages -->
+  {{ 'performance-widget.css' | asset_url | stylesheet_tag }}
 </head>
 
 <body class="template-{{ template | split: '.' | first }}">
@@ -258,7 +269,7 @@
 
   <!-- Skip to main content for accessibility -->
   {% comment %} <a href="#main-content" class="skip-link">Skip to main content
-                        </a> {% endcomment %}
+                              </a> {% endcomment %}
 
   <!-- Header Section -->
   {% section 'header' %}

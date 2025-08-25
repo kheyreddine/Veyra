@@ -91,6 +91,15 @@
         "title": "What This Theme Demonstrates",
         "subtitle": "A comprehensive showcase of advanced Shopify development skills, performance optimizations, and custom functionality that demonstrates senior-level expertise."
       }
+    },
+    "performance-widget": {
+      "type": "performance-widget",
+      "settings": {
+        "enabled": true,
+        "position": "bottom-right",
+        "show_on_mobile": true,
+        "auto_hide": false
+      }
     }
   },
   "order": [
@@ -99,6 +108,7 @@
     "testimonials",
     "recently-viewed",
     "portfolio-info",
-    "theme-features"
+    "theme-features",
+    "performance-widget"
   ]
 }

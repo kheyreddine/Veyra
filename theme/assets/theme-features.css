@@ -225,3 +225,14 @@
     box-shadow: none;
   }
 }
+
+/**
+ * Theme Features CSS
+ * Business Problem: Complex styling scattered across multiple files reduces maintainability
+ * Solution: Centralized CSS for theme-specific features and components
+ * Client Value: Easier maintenance, consistent styling, better performance
+ * Technical Achievement: Modular CSS architecture, BEM naming, responsive design
+ * 
+ * NOTE: Performance widget styles moved to dedicated performance-widget.css file
+ * for better modularity and maintainability
+ */

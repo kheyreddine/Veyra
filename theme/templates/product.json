@@ -12,9 +12,19 @@
     "main_product": {
       "type": "main-product",
       "settings": {}
+    },
+    "performance-widget": {
+      "type": "performance-widget",
+      "settings": {
+        "enabled": true,
+        "position": "bottom-right",
+        "show_on_mobile": true,
+        "auto_hide": false
+      }
     }
   },
   "order": [
-    "main_product"
+    "main_product",
+    "performance-widget"
   ]
 }
