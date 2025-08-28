@@ -205,14 +205,14 @@
 {% endif %}
 
   {% comment %} 
-    Social Sharing Metadata (OG + Twitter)
-    Business Problem: LinkedIn/Twitter previews were missing or incorrect.
-    Solution: Static meta tags rendered server-side in <head>, placed AFTER content_for_header
-    to avoid being overridden by Shopify defaults.
-    Image Strategy: Prefer resource image (page_image). If not present, use theme setting
-    (settings.social_share_image) which should match the hero (image-banner) background.
-    Final Fallback: assets/preview.jpg. All images are cropped to 1200x630 for LinkedIn. 
-  {% endcomment %}
+        Social Sharing Metadata (OG + Twitter)
+        Business Problem: LinkedIn/Twitter previews were missing or incorrect.
+        Solution: Static meta tags rendered server-side in <head>, placed AFTER content_for_header
+        to avoid being overridden by Shopify defaults.
+        Image Strategy: Prefer resource image (page_image). If not present, use theme setting
+        (settings.social_share_image) which should match the hero (image-banner) background.
+        Final Fallback: assets/preview.jpg. All images are cropped to 1200x630 for LinkedIn. 
+    {% endcomment %}
 
   {% assign share_title = "Veyra Clothing – Custom Shopify 2.0 Theme by Kheyreddine Hadri" %}
   {% assign share_description = "A custom-built Shopify 2.0 theme showcasing advanced frontend, Liquid, and performance skills. Includes search autocomplete, cart, recently viewed products, and performance optimizations." %}
@@ -237,6 +237,8 @@
 
     <!-- Twitter Card meta tags -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:domain" content="{{ shop.domain }}">
+  <meta name="twitter:url" content="{{ canonical_url }}">
   <meta name="twitter:title" content="{{ share_title }}">
   <meta name="twitter:description" content="{{ share_description }}">
   <meta name="twitter:image" content="{{ share_image_url }}">
@@ -284,7 +286,7 @@
 
   <!-- Skip to main content for accessibility -->
   {% comment %} <a href="#main-content" class="skip-link">Skip to main content
-                                </a> {% endcomment %}
+                                  </a> {% endcomment %}
 
   <!-- Header Section -->
   {% section 'header' %}

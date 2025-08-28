@@ -1,4 +1,9 @@
 /* Header Section Styles */
+/* 
+  NOTE: All .header__mobile-nav styles are centralized here to prevent conflicts.
+  This file is the sole source of truth for mobile navigation styling.
+  Do not add mobile navigation styles to base.css or other files.
+*/
 
 /* Desktop Styles */
 .header {
@@ -18,6 +23,7 @@
   max-width: 1200px;
   margin: 0 auto;
   gap: 20px;
+  position: relative;
 }
 
 /* Brand/Logo */
@@ -239,15 +245,18 @@
   transition: all 0.3s ease-in-out;
 }
 
-/* Mobile Navigation */
+/* Mobile Navigation - Centralized styles for .header__mobile-nav */
 .header__mobile-nav {
   display: none;
+  position: relative;
   background-color: var(--color-white);
   border-top: 1px solid var(--color-gray-light);
   padding: var(--spacing-lg) 0;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
+  z-index: 999;
+  width: 100%;
 }
 
 .header__mobile-nav-list {
@@ -356,6 +365,10 @@
     display: block;
     max-height: 0;
     padding: 0;
+    position: relative;
+    width: 100%;
+    background-color: var(--color-white);
+    border-top: 1px solid var(--color-gray-light);
   }
   
   .header__content {
@@ -377,8 +390,10 @@
 
 /* Mobile Menu Open State */
 .header--mobile-open .header__mobile-nav {
-  max-height: 500px;
-  padding: var(--spacing-lg) 0;
+  max-height: 500px !important;
+  padding: var(--spacing-lg) 0 !important;
+  display: block !important;
+  overflow: visible !important;
 }
 
 .header--mobile-open .header__mobile-toggle .header__hamburger-line:nth-child(1) {

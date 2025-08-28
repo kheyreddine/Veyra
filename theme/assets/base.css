@@ -271,61 +271,7 @@ a:hover {
   transition: all 0.2s ease;
 }
 
-/* Mobile Navigation */
-.header__mobile-nav {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e5e5;
-  padding: 20px 0;
-}
-
-.header__mobile-nav-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.header__mobile-nav-item {
-  margin: 0;
-}
-
-.header__mobile-nav-link {
-  display: block;
-  padding: 12px 0;
-  color: #333333;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: color 0.2s ease;
-  border-bottom: 1px solid #f8f9fa;
-}
-
-.header__mobile-nav-link:hover {
-  color: #666666;
-}
-
-/* Mobile Menu Active State */
-.header--mobile-open .header__mobile-nav {
-  display: block;
-}
-
-.header--mobile-open .header__hamburger-line:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.header--mobile-open .header__hamburger-line:nth-child(2) {
-  opacity: 0;
-}
-
-.header--mobile-open .header__hamburger-line:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -6px);
-}
+/* Mobile Navigation - Styles moved to header.css for centralization */
 
 /* Main Content */
 .main {
